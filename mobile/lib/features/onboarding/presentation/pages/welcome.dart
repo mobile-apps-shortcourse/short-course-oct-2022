@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,18 +22,20 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: context.colorScheme.background,
-        systemNavigationBarColor: context.colorScheme.background,
-        statusBarIconBrightness: context.invertedThemeBrightness,
-        systemNavigationBarDividerColor: context.colorScheme.background,
-        systemNavigationBarIconBrightness: context.invertedThemeBrightness,
-        statusBarBrightness: context.theme.brightness,
-        systemStatusBarContrastEnforced: false,
-        systemNavigationBarContrastEnforced: false,
-      ),
-    );
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   SystemUiOverlayStyle(
+    //     statusBarColor: context.colorScheme.background,
+    //     systemNavigationBarColor: context.colorScheme.background,
+    //     statusBarIconBrightness: context.invertedThemeBrightness,
+    //     systemNavigationBarDividerColor: context.colorScheme.background,
+    //     systemNavigationBarIconBrightness: context.invertedThemeBrightness,
+    //     statusBarBrightness: context.theme.brightness,
+    //     systemStatusBarContrastEnforced: false,
+    //     systemNavigationBarContrastEnforced: false,
+    //   ),
+    // );
+
+    kUseDefaultOverlays(context, statusBarBrightness: context.theme.brightness);
 
     return Scaffold(
       extendBody: true,
@@ -59,7 +63,10 @@ class _WelcomePageState extends State<WelcomePage> {
             AppRoundedButton(
               text: 'Create an account',
               layoutSize: LayoutSize.wrapContent,
-              onTap: () => context.router.push(const UserTypePickerRoute()),
+              onTap: () async {
+                await context.router.push(const UserTypePickerRoute());
+                kUseDefaultOverlays(context, statusBarBrightness: context.theme.brightness);
+              },
             ),
             AppRoundedButton(
               text: 'I already have an account',

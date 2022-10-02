@@ -17,6 +17,7 @@ class CrowderApp extends StatefulWidget {
 class _CrowderAppState extends State<CrowderApp> {
   final _appRouter = AppRouter();
   final _textTheme = GoogleFonts.spaceGroteskTextTheme();
+
   // final _textTheme = GoogleFonts.dmMonoTextTheme();
   late final _lightTheme =
           kLightTheme(context: context).copyWith(textTheme: _textTheme),
@@ -24,13 +25,18 @@ class _CrowderAppState extends State<CrowderApp> {
 
   @override
   Widget build(BuildContext context) => DismissKeyboard(
-    child: MaterialApp.router(
+        child: MaterialApp.router(
           /// basic
           title: kAppName,
           debugShowCheckedModeBanner: false,
 
           /// theming
-          theme: _lightTheme,
+          theme: _lightTheme.copyWith(
+            colorScheme: _lightTheme.colorScheme.copyWith(
+              background: const Color(0xffF3F5F7),
+              surface: kWhiteColor,
+            ),
+          ),
           darkTheme: _darkTheme,
           themeMode: ThemeMode.system,
 
@@ -38,5 +44,5 @@ class _CrowderAppState extends State<CrowderApp> {
           routeInformationParser: _appRouter.defaultRouteParser(),
           routerDelegate: _appRouter.delegate(),
         ),
-  );
+      );
 }

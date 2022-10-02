@@ -15,7 +15,7 @@ Future<void> showLoginSheet(BuildContext context) async {
       elevation: 8,
       controller: controller,
       cornerRadius: 16,
-      color: context.colorScheme.background,
+      color: context.colorScheme.surface,
       duration: kSidebarFooterDuration,
       dismissOnBackdropTap: false,
       avoidStatusBar: true,
@@ -26,7 +26,7 @@ Future<void> showLoginSheet(BuildContext context) async {
         positioning: SnapPositioning.relativeToAvailableSpace,
       ),
       headerBuilder: (context, _) => Material(
-        color: context.colorScheme.background,
+        color: context.colorScheme.surface,
         child: AnimatedColumn(
           animateType: AnimateType.slideUp,
           children: [
@@ -48,7 +48,7 @@ Future<void> showLoginSheet(BuildContext context) async {
         ).top(16),
       ).fillMaxWidth(context),
       footerBuilder: (context, _) => Material(
-        color: context.colorScheme.background,
+        color: context.colorScheme.surface,
         child: SafeArea(
           top: false,
           child: AnimatedColumn(
@@ -92,7 +92,7 @@ Future<void> showLoginSheet(BuildContext context) async {
       ),
       builder: (context, state) {
         return Material(
-          color: context.colorScheme.background,
+          color: context.colorScheme.surface,
           child: SafeArea(
             top: false,
             child: Form(

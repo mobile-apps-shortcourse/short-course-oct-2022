@@ -5,6 +5,7 @@ import 'package:shared_utils/shared_utils.dart';
 class CrowderAppBar extends StatefulWidget {
   final String title;
   final bool showBackButton;
+  final Color? contentBackground;
   final Widget child;
 
   const CrowderAppBar({
@@ -12,6 +13,7 @@ class CrowderAppBar extends StatefulWidget {
     required this.title,
     required this.showBackButton,
     required this.child,
+    this.contentBackground,
   }) : super(key: key);
 
   @override
@@ -21,13 +23,14 @@ class CrowderAppBar extends StatefulWidget {
 class _CrowderAppBarState extends State<CrowderAppBar> {
   @override
   Widget build(BuildContext context) {
-    kUseDefaultOverlays(context, statusBarBrightness: context.theme.brightness);
+    kUseDefaultOverlays(context,
+        statusBarBrightness: context.invertedThemeBrightness);
 
     return Container(
       height: context.height,
       width: context.width,
       decoration: BoxDecoration(
-        color: context.colorScheme.surface,
+        color: context.colorScheme.secondary,
       ),
       child: Stack(
         clipBehavior: Clip.none,
@@ -42,7 +45,7 @@ class _CrowderAppBarState extends State<CrowderAppBar> {
                   .capitalize()
                   .h6(context,
                       weight: FontWeight.w600,
-                      color: context.colorScheme.onSurface)
+                      color: context.colorScheme.onSecondary)
                   .top(8)
                   .centered(),
             ),
@@ -50,16 +53,22 @@ class _CrowderAppBarState extends State<CrowderAppBar> {
 
           /// page content
           Positioned.fill(
-              top: context.height * 0.15,
-              child: DecoratedBox(
-                  decoration:
-                      BoxDecoration(color: context.colorScheme.background),
+              top: context.height * 0.14,
+              child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                          topRight: Radius.circular(24)),
+                      color: widget.contentBackground ??
+                          context.colorScheme.surface),
+                  padding: const EdgeInsets.fromLTRB(24, 36, 24, 0),
                   child: widget.child)),
 
           /// back nav
           if (widget.showBackButton) ...{
             Positioned(
-              top: context.height * 0.05,
+              top: context.height * 0.04,
               left: 12,
               child: SafeArea(
                 bottom: false,
