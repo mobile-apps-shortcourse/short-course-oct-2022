@@ -1,0 +1,33 @@
+package utils
+
+import (
+	"context"
+	codecs "github.com/amsokol/mongo-go-driver-protobuf"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	dbOpts "go.mongodb.org/mongo-driver/mongo/options"
+	"log"
+	"time"
+)
+
+// GetMongoClient
+// https://cloud.mongodb.com/v2/61e00d8a68dec93000bf563c#clusters/connect?clusterId=Cluster0
+func GetMongoClient() *mongo.Database {
+	// Register custom codecs for protobuf Timestamp and wrapper types
+	reg := codecs.Register(bson.NewRegistryBuilder()).Build()
+
+	serverAPIOptions := dbOpts.ServerAPI(dbOpts.ServerAPIVersion1)
+	clientOptions := dbOpts.Client().
+		ApplyURI(GetMongoUri()).
+		SetServerAPIOptions(serverAPIOptions)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, clientOptions, &dbOpts.ClientOptions{
+		Registry: reg,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return client.Database(AppDatabaseName, nil)
+}

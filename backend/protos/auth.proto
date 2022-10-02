@@ -1,0 +1,67 @@
+syntax = "proto3";
+//import "google/protobuf/timestamp.proto";
+//import "google/protobuf/empty.proto";
+package crowder;
+option go_package = "crowder.com;ms";
+
+service AuthSvc {
+
+  rpc createUser(CrowderUser) returns (CrowderUser);
+  rpc getUser(UserRequest) returns (stream CrowderUser);
+  rpc updateUser(CrowderUser) returns (CrowderUser);
+  rpc deleteUser(UserRequest) returns (AuthResponse);
+  rpc getUsers(GetUsersRequest) returns (stream GetUsersResponse);
+  rpc login(LoginRequest) returns (AuthResponse);
+}
+
+message CrowderUser {
+  string id = 1;
+  string username = 2;
+  string password = 3;
+  string salt = 4;
+  UserType type = 5;
+  string avatar = 6;
+  AccountStatus status = 7;
+}
+
+message GetUsersRequest {
+  UserType userType = 1;
+}
+
+message GetUsersResponse {
+  repeated CrowderUser users = 1;
+}
+
+// region authentication
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message UserRequest {
+  string id = 1;
+}
+
+message AuthResponse {
+  bool successful = 1;
+  string message = 2;
+  CrowderUser user = 3;
+}
+
+/// endregion
+
+/// region setup
+enum UserType {
+  voter = 0;
+  candidate = 1;
+  organizer = 2;
+}
+
+enum AccountStatus {
+  approved = 0; // allowed to use platform
+  verified = 1; // trusted, same as approved
+  suspended = 2; // temporary block
+  blocked = 3; // permanent restriction from app access
+}
+
+/// endregion

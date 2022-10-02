@@ -1,0 +1,67 @@
+name: mobile
+description: An e-voting mobile application created with Flutter and backed by Golang (using gRPC framework)
+
+publish_to: 'none'
+
+version: 0.0.1+1
+
+environment:
+  sdk: '>=2.18.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  grpc:
+  google_fonts:
+  auto_route:
+  lottie:
+  bloc:
+  flutter_bloc:
+  protobuf_google:
+  logger:
+  fluttericon:
+  sliding_sheet:
+  shared_utils:
+    git:
+      url: https://github.com/quabynah-bilson/shared_utils.git
+      ref: main
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  build_runner:
+  auto_route_generator:
+  flutter_launcher_icons:
+  flutter_native_splash:
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/anim/
+
+# flutter pub run flutter_launcher_icons:main
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/vote.logo.png"
+
+# flutter pub run flutter_native_splash:create
+flutter_native_splash:
+  image: assets/vote.logo.png
+  image_dark: assets/vote.logo.png
+  icon_background_color: "#ffffff"
+  color: "#ffffff"
+  color_dark: "#ffffff"
+  icon_background_color_dark: "#ffffff"
+  web: false
+  android_12:
+    image: assets/vote.logo.png
+    color: "#ffffff"
+    icon_background_color: "#ffffff"
+    icon_background_color_dark: "#ffffff"
+    color_dark: "#ffffff"
+    image_dark: assets/vote.logo.png

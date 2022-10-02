@@ -1,0 +1,7 @@
+syntax = "proto3";
+//import "google/protobuf/timestamp.proto";
+//import "google/protobuf/empty.proto";
+package crowder;
+option go_package = "crowder.com;ms";
+
+service CommonSvc {}
