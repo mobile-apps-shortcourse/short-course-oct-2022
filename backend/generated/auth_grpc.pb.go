@@ -22,12 +22,13 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthSvcClient interface {
-	CreateUser(ctx context.Context, in *CrowderUser, opts ...grpc.CallOption) (*CrowderUser, error)
+	CreateUser(ctx context.Context, in *CrowderUser, opts ...grpc.CallOption) (*AuthResponse, error)
 	GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (AuthSvc_GetUserClient, error)
 	UpdateUser(ctx context.Context, in *CrowderUser, opts ...grpc.CallOption) (*CrowderUser, error)
 	DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*AuthResponse, error)
 	GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (AuthSvc_GetUsersClient, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*AuthResponse, error)
+	ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*AuthResponse, error)
 }
 
 type authSvcClient struct {
@@ -38,8 +39,8 @@ func NewAuthSvcClient(cc grpc.ClientConnInterface) AuthSvcClient {
 	return &authSvcClient{cc}
 }
 
-func (c *authSvcClient) CreateUser(ctx context.Context, in *CrowderUser, opts ...grpc.CallOption) (*CrowderUser, error) {
-	out := new(CrowderUser)
+func (c *authSvcClient) CreateUser(ctx context.Context, in *CrowderUser, opts ...grpc.CallOption) (*AuthResponse, error) {
+	out := new(AuthResponse)
 	err := c.cc.Invoke(ctx, "/crowder.AuthSvc/createUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -63,7 +64,7 @@ func (c *authSvcClient) GetUser(ctx context.Context, in *UserRequest, opts ...gr
 }
 
 type AuthSvc_GetUserClient interface {
-	Recv() (*CrowderUser, error)
+	Recv() (*AuthResponse, error)
 	grpc.ClientStream
 }
 
@@ -71,8 +72,8 @@ type authSvcGetUserClient struct {
 	grpc.ClientStream
 }
 
-func (x *authSvcGetUserClient) Recv() (*CrowderUser, error) {
-	m := new(CrowderUser)
+func (x *authSvcGetUserClient) Recv() (*AuthResponse, error) {
+	m := new(AuthResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -138,16 +139,26 @@ func (c *authSvcClient) Login(ctx context.Context, in *LoginRequest, opts ...grp
 	return out, nil
 }
 
+func (c *authSvcClient) ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*AuthResponse, error) {
+	out := new(AuthResponse)
+	err := c.cc.Invoke(ctx, "/crowder.AuthSvc/resetPassword", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthSvcServer is the server API for AuthSvc service.
 // All implementations must embed UnimplementedAuthSvcServer
 // for forward compatibility
 type AuthSvcServer interface {
-	CreateUser(context.Context, *CrowderUser) (*CrowderUser, error)
+	CreateUser(context.Context, *CrowderUser) (*AuthResponse, error)
 	GetUser(*UserRequest, AuthSvc_GetUserServer) error
 	UpdateUser(context.Context, *CrowderUser) (*CrowderUser, error)
 	DeleteUser(context.Context, *UserRequest) (*AuthResponse, error)
 	GetUsers(*GetUsersRequest, AuthSvc_GetUsersServer) error
 	Login(context.Context, *LoginRequest) (*AuthResponse, error)
+	ResetPassword(context.Context, *ResetPasswordRequest) (*AuthResponse, error)
 	mustEmbedUnimplementedAuthSvcServer()
 }
 
@@ -155,7 +166,7 @@ type AuthSvcServer interface {
 type UnimplementedAuthSvcServer struct {
 }
 
-func (UnimplementedAuthSvcServer) CreateUser(context.Context, *CrowderUser) (*CrowderUser, error) {
+func (UnimplementedAuthSvcServer) CreateUser(context.Context, *CrowderUser) (*AuthResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
 func (UnimplementedAuthSvcServer) GetUser(*UserRequest, AuthSvc_GetUserServer) error {
@@ -172,6 +183,9 @@ func (UnimplementedAuthSvcServer) GetUsers(*GetUsersRequest, AuthSvc_GetUsersSer
 }
 func (UnimplementedAuthSvcServer) Login(context.Context, *LoginRequest) (*AuthResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedAuthSvcServer) ResetPassword(context.Context, *ResetPasswordRequest) (*AuthResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResetPassword not implemented")
 }
 func (UnimplementedAuthSvcServer) mustEmbedUnimplementedAuthSvcServer() {}
 
@@ -213,7 +227,7 @@ func _AuthSvc_GetUser_Handler(srv interface{}, stream grpc.ServerStream) error {
 }
 
 type AuthSvc_GetUserServer interface {
-	Send(*CrowderUser) error
+	Send(*AuthResponse) error
 	grpc.ServerStream
 }
 
@@ -221,7 +235,7 @@ type authSvcGetUserServer struct {
 	grpc.ServerStream
 }
 
-func (x *authSvcGetUserServer) Send(m *CrowderUser) error {
+func (x *authSvcGetUserServer) Send(m *AuthResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -300,6 +314,24 @@ func _AuthSvc_Login_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthSvc_ResetPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResetPasswordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthSvcServer).ResetPassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/crowder.AuthSvc/resetPassword",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthSvcServer).ResetPassword(ctx, req.(*ResetPasswordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthSvc_ServiceDesc is the grpc.ServiceDesc for AuthSvc service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -322,6 +354,10 @@ var AuthSvc_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "login",
 			Handler:    _AuthSvc_Login_Handler,
+		},
+		{
+			MethodName: "resetPassword",
+			Handler:    _AuthSvc_ResetPassword_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

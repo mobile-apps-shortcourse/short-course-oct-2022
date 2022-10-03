@@ -66,7 +66,8 @@ class _WelcomePageState extends State<WelcomePage> {
               layoutSize: LayoutSize.wrapContent,
               onTap: () async {
                 await context.router.push(const UserTypePickerRoute());
-                kUseDefaultOverlays(context, statusBarBrightness: context.theme.brightness);
+                kUseDefaultOverlays(context,
+                    statusBarBrightness: context.theme.brightness);
               },
             ),
             AppRoundedButton(
@@ -76,7 +77,7 @@ class _WelcomePageState extends State<WelcomePage> {
               onTap: () async => await showLoginSheet(context),
             ).top(12),
           ],
-        ).horizontal(24).top(40),
+        ).horizontal(context.width * 0.1),
       ),
     );
   }

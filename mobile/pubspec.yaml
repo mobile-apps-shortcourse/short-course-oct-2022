@@ -18,10 +18,14 @@ dependencies:
   lottie:
   bloc:
   flutter_bloc:
+  shared_preferences:
+  dartz:
   protobuf_google:
   logger:
   fluttericon:
   sliding_sheet:
+  image_cropper:
+  image_picker:
   shared_utils:
     git:
       url: https://github.com/quabynah-bilson/shared_utils.git

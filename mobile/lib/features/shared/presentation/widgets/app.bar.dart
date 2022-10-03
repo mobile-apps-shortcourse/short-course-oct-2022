@@ -7,13 +7,15 @@ class CrowderAppBar extends StatefulWidget {
   final bool showBackButton;
   final Color? contentBackground;
   final Widget child;
+  final void Function()? onBackPressed;
 
   const CrowderAppBar({
     Key? key,
     required this.title,
-    required this.showBackButton,
+    this.showBackButton = true,
     required this.child,
     this.contentBackground,
+    this.onBackPressed,
   }) : super(key: key);
 
   @override
@@ -67,9 +69,10 @@ class _CrowderAppBarState extends State<CrowderAppBar> {
 
           /// back nav
           if (widget.showBackButton) ...{
-            Positioned(
+            AnimatedPositioned(
+              duration: kSidebarDuration,
               top: context.height * 0.04,
-              left: 12,
+              left: widget.showBackButton ? 12 : -context.width * 0.2,
               child: SafeArea(
                 bottom: false,
                 child: Container(
@@ -86,7 +89,9 @@ class _CrowderAppBarState extends State<CrowderAppBar> {
                         color: context.colorScheme.surface,
                       ),
                     ),
-                    onPressed: context.router.pop,
+                    onPressed: widget.onBackPressed == null
+                        ? context.router.pop
+                        : widget.onBackPressed!,
                     padding: EdgeInsets.zero,
                   ),
                 ),

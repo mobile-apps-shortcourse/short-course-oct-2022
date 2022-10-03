@@ -6,12 +6,13 @@ option go_package = "crowder.com;ms";
 
 service AuthSvc {
 
-  rpc createUser(CrowderUser) returns (CrowderUser);
-  rpc getUser(UserRequest) returns (stream CrowderUser);
+  rpc createUser(CrowderUser) returns (AuthResponse);
+  rpc getUser(UserRequest) returns (stream AuthResponse);
   rpc updateUser(CrowderUser) returns (CrowderUser);
   rpc deleteUser(UserRequest) returns (AuthResponse);
   rpc getUsers(GetUsersRequest) returns (stream GetUsersResponse);
   rpc login(LoginRequest) returns (AuthResponse);
+  rpc resetPassword(ResetPasswordRequest) returns (AuthResponse);
 }
 
 message CrowderUser {
@@ -22,6 +23,8 @@ message CrowderUser {
   UserType type = 5;
   string avatar = 6;
   AccountStatus status = 7;
+  string bio = 8;
+  string displayName = 9;
 }
 
 message GetUsersRequest {
@@ -36,6 +39,11 @@ message GetUsersResponse {
 message LoginRequest {
   string username = 1;
   string password = 2;
+}
+
+message ResetPasswordRequest {
+  string oldPassword = 1;
+  string newPassword = 2;
 }
 
 message UserRequest {

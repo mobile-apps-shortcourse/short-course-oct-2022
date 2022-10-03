@@ -22,6 +22,8 @@ class CrowderUser extends $pb.GeneratedMessage {
     ..e<UserType>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'type', $pb.PbFieldType.OE, defaultOrMaker: UserType.voter, valueOf: UserType.valueOf, enumValues: UserType.values)
     ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'avatar')
     ..e<AccountStatus>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: AccountStatus.approved, valueOf: AccountStatus.valueOf, enumValues: AccountStatus.values)
+    ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'bio')
+    ..aOS(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'displayName', protoName: 'displayName')
     ..hasRequiredFields = false
   ;
 
@@ -34,6 +36,8 @@ class CrowderUser extends $pb.GeneratedMessage {
     UserType? type,
     $core.String? avatar,
     AccountStatus? status,
+    $core.String? bio,
+    $core.String? displayName,
   }) {
     final _result = create();
     if (id != null) {
@@ -56,6 +60,12 @@ class CrowderUser extends $pb.GeneratedMessage {
     }
     if (status != null) {
       _result.status = status;
+    }
+    if (bio != null) {
+      _result.bio = bio;
+    }
+    if (displayName != null) {
+      _result.displayName = displayName;
     }
     return _result;
   }
@@ -142,6 +152,24 @@ class CrowderUser extends $pb.GeneratedMessage {
   $core.bool hasStatus() => $_has(6);
   @$pb.TagNumber(7)
   void clearStatus() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.String get bio => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set bio($core.String v) { $_setString(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasBio() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearBio() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get displayName => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set displayName($core.String v) { $_setString(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasDisplayName() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearDisplayName() => clearField(9);
 }
 
 class GetUsersRequest extends $pb.GeneratedMessage {
@@ -291,6 +319,67 @@ class LoginRequest extends $pb.GeneratedMessage {
   $core.bool hasPassword() => $_has(1);
   @$pb.TagNumber(2)
   void clearPassword() => clearField(2);
+}
+
+class ResetPasswordRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ResetPasswordRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'crowder'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'oldPassword', protoName: 'oldPassword')
+    ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'newPassword', protoName: 'newPassword')
+    ..hasRequiredFields = false
+  ;
+
+  ResetPasswordRequest._() : super();
+  factory ResetPasswordRequest({
+    $core.String? oldPassword,
+    $core.String? newPassword,
+  }) {
+    final _result = create();
+    if (oldPassword != null) {
+      _result.oldPassword = oldPassword;
+    }
+    if (newPassword != null) {
+      _result.newPassword = newPassword;
+    }
+    return _result;
+  }
+  factory ResetPasswordRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ResetPasswordRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ResetPasswordRequest clone() => ResetPasswordRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ResetPasswordRequest copyWith(void Function(ResetPasswordRequest) updates) => super.copyWith((message) => updates(message as ResetPasswordRequest)) as ResetPasswordRequest; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static ResetPasswordRequest create() => ResetPasswordRequest._();
+  ResetPasswordRequest createEmptyInstance() => create();
+  static $pb.PbList<ResetPasswordRequest> createRepeated() => $pb.PbList<ResetPasswordRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ResetPasswordRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ResetPasswordRequest>(create);
+  static ResetPasswordRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get oldPassword => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set oldPassword($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasOldPassword() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearOldPassword() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get newPassword => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set newPassword($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasNewPassword() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearNewPassword() => clearField(2);
 }
 
 class UserRequest extends $pb.GeneratedMessage {

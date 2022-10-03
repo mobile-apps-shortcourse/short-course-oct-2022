@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/features/onboarding/presentation/manager/onboarding_cubit.dart';
 import 'package:mobile/utils/constants.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:shared_utils/shared_utils.dart';
@@ -8,7 +10,12 @@ import 'package:sliding_sheet/sliding_sheet.dart';
 /// show login sheet
 Future<void> showLoginSheet(BuildContext context) async {
   final controller = SheetController(), authFormKey = GlobalKey<FormState>();
-  var username = '', password = '', loading = false;
+  late final _onboardingCubit = context.read<OnboardingCubit>(),
+      usernameController =
+          TextEditingController(text: _onboardingCubit.kUsername),
+      passwordController =
+          TextEditingController(text: _onboardingCubit.kPassword);
+  var loading = false;
 
   await showSlidingBottomSheet(context, builder: (context) {
     return SlidingSheetDialog(
@@ -65,7 +72,7 @@ Future<void> showLoginSheet(BuildContext context) async {
                     authFormKey.currentState?.save();
 
                     logger.i(
-                        'signing in with username($username) & password($password)');
+                        'signing in with username(${_onboardingCubit.kUsername}) & password(${_onboardingCubit.kPassword})');
 
                     // todo => perform authentication here
 
@@ -104,9 +111,10 @@ Future<void> showLoginSheet(BuildContext context) async {
                   AppTextField(
                     'Username',
                     enabled: !loading,
+                    controller: usernameController,
                     inputType: TextInputType.emailAddress,
                     onChange: (input) {
-                      username = input?.trim() ?? '';
+                      _onboardingCubit.kUsername = input?.trim() ?? '';
                       controller.rebuild();
                     },
                     validator: Validators.validateEmail,
@@ -114,9 +122,10 @@ Future<void> showLoginSheet(BuildContext context) async {
                   AppTextField(
                     'Password',
                     enabled: !loading,
+                    controller: passwordController,
                     textFieldType: AppTextFieldType.password,
                     onChange: (input) {
-                      password = input?.trim() ?? '';
+                      _onboardingCubit.kPassword = input?.trim() ?? '';
                       controller.rebuild();
                     },
                     validator: Validators.validatePassword,

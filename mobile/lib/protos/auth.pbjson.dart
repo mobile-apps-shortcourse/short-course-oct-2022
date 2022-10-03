@@ -44,11 +44,13 @@ const CrowderUser$json = const {
     const {'1': 'type', '3': 5, '4': 1, '5': 14, '6': '.crowder.UserType', '10': 'type'},
     const {'1': 'avatar', '3': 6, '4': 1, '5': 9, '10': 'avatar'},
     const {'1': 'status', '3': 7, '4': 1, '5': 14, '6': '.crowder.AccountStatus', '10': 'status'},
+    const {'1': 'bio', '3': 8, '4': 1, '5': 9, '10': 'bio'},
+    const {'1': 'displayName', '3': 9, '4': 1, '5': 9, '10': 'displayName'},
   ],
 };
 
 /// Descriptor for `CrowderUser`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List crowderUserDescriptor = $convert.base64Decode('CgtDcm93ZGVyVXNlchIOCgJpZBgBIAEoCVICaWQSGgoIdXNlcm5hbWUYAiABKAlSCHVzZXJuYW1lEhoKCHBhc3N3b3JkGAMgASgJUghwYXNzd29yZBISCgRzYWx0GAQgASgJUgRzYWx0EiUKBHR5cGUYBSABKA4yES5jcm93ZGVyLlVzZXJUeXBlUgR0eXBlEhYKBmF2YXRhchgGIAEoCVIGYXZhdGFyEi4KBnN0YXR1cxgHIAEoDjIWLmNyb3dkZXIuQWNjb3VudFN0YXR1c1IGc3RhdHVz');
+final $typed_data.Uint8List crowderUserDescriptor = $convert.base64Decode('CgtDcm93ZGVyVXNlchIOCgJpZBgBIAEoCVICaWQSGgoIdXNlcm5hbWUYAiABKAlSCHVzZXJuYW1lEhoKCHBhc3N3b3JkGAMgASgJUghwYXNzd29yZBISCgRzYWx0GAQgASgJUgRzYWx0EiUKBHR5cGUYBSABKA4yES5jcm93ZGVyLlVzZXJUeXBlUgR0eXBlEhYKBmF2YXRhchgGIAEoCVIGYXZhdGFyEi4KBnN0YXR1cxgHIAEoDjIWLmNyb3dkZXIuQWNjb3VudFN0YXR1c1IGc3RhdHVzEhAKA2JpbxgIIAEoCVIDYmlvEiAKC2Rpc3BsYXlOYW1lGAkgASgJUgtkaXNwbGF5TmFtZQ==');
 @$core.Deprecated('Use getUsersRequestDescriptor instead')
 const GetUsersRequest$json = const {
   '1': 'GetUsersRequest',
@@ -80,6 +82,17 @@ const LoginRequest$json = const {
 
 /// Descriptor for `LoginRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List loginRequestDescriptor = $convert.base64Decode('CgxMb2dpblJlcXVlc3QSGgoIdXNlcm5hbWUYASABKAlSCHVzZXJuYW1lEhoKCHBhc3N3b3JkGAIgASgJUghwYXNzd29yZA==');
+@$core.Deprecated('Use resetPasswordRequestDescriptor instead')
+const ResetPasswordRequest$json = const {
+  '1': 'ResetPasswordRequest',
+  '2': const [
+    const {'1': 'oldPassword', '3': 1, '4': 1, '5': 9, '10': 'oldPassword'},
+    const {'1': 'newPassword', '3': 2, '4': 1, '5': 9, '10': 'newPassword'},
+  ],
+};
+
+/// Descriptor for `ResetPasswordRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List resetPasswordRequestDescriptor = $convert.base64Decode('ChRSZXNldFBhc3N3b3JkUmVxdWVzdBIgCgtvbGRQYXNzd29yZBgBIAEoCVILb2xkUGFzc3dvcmQSIAoLbmV3UGFzc3dvcmQYAiABKAlSC25ld1Bhc3N3b3Jk');
 @$core.Deprecated('Use userRequestDescriptor instead')
 const UserRequest$json = const {
   '1': 'UserRequest',

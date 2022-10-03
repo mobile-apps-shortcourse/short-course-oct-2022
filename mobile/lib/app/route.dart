@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:mobile/features/onboarding/presentation/pages/setup.basic.info.dart';
 import 'package:mobile/features/onboarding/presentation/pages/user.type.picker.dart';
 import 'package:mobile/features/onboarding/presentation/pages/welcome.dart';
 
@@ -7,6 +8,7 @@ import 'package:mobile/features/onboarding/presentation/pages/welcome.dart';
   routes: [
     AutoRoute(page: WelcomePage, initial: true),
     AutoRoute(page: UserTypePickerPage),
+    AutoRoute(page: SetupBasicInfoPage),
   ],
 )
 class $AppRouter {}

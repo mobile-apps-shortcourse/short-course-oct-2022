@@ -1,4 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/app/route.gr.dart';
+import 'package:mobile/features/onboarding/presentation/manager/onboarding_cubit.dart';
 import 'package:mobile/features/shared/presentation/widgets/app.bar.dart';
 import 'package:mobile/protos/auth.pb.dart';
 import 'package:mobile/utils/constants.dart';
@@ -14,6 +18,7 @@ class UserTypePickerPage extends StatefulWidget {
 
 class _UserTypePickerPageState extends State<UserTypePickerPage> {
   UserType? _selectedUserType;
+  late final _onboardingCubit = context.read<OnboardingCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +29,8 @@ class _UserTypePickerPageState extends State<UserTypePickerPage> {
         child: AppRoundedButton(
           text: 'Next',
           enabled: _selectedUserType != null,
-          onTap: () => context.showCustomDialog(
-              headerIconAsset: kAppLogo, message: kFeatureUnderDev),
+          onTap: () => context.router
+              .push(SetupBasicInfoRoute(userType: _selectedUserType!)),
         ).horizontal(24),
       ),
       body: CrowderAppBar(
@@ -37,7 +42,7 @@ class _UserTypePickerPageState extends State<UserTypePickerPage> {
             /// icon
             SliverToBoxAdapter(
               child: kAppLogo
-                  .asAssetImage(size: 120, fit: BoxFit.cover)
+                  .asAssetImage(size: context.width * 0.35, fit: BoxFit.cover)
                   .centered(),
             ),
 
@@ -57,8 +62,10 @@ class _UserTypePickerPageState extends State<UserTypePickerPage> {
                   UserType.values
                       .map((e) => _UserAccountTypeTile(
                             type: e,
-                            onTap: (type) =>
-                                setState(() => _selectedUserType = type),
+                            onTap: (type) => setState(() {
+                              _selectedUserType = type;
+                              _onboardingCubit.kUserType = type;
+                            }),
                             selectedUserType: _selectedUserType,
                           ))
                       .toList(),

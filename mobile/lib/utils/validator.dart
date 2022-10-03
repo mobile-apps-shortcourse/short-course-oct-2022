@@ -10,8 +10,8 @@ class Validators {
   static String? validatePhone(String? input) {
     input = input?.replaceAll(' ', '');
     if (input.isNullOrEmpty()) return 'Required';
-    var regex =
-        RegExp(r'^\+?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$');
+    var regex = RegExp(
+        r'\s*(?:\+?(\d{1,3}))?[\W\D\s]^|()*(\d[\W\D\s]*?\d[\D\W\s]*?\d)[\W\D\s]*(\d[\W\D\s]*?\d[\D\W\s]*?\d)[\W\D\s]*(\d[\W\D\s]*?\d[\D\W\s]*?\d[\W\D\s]*?\d)(?: *x(\d+))?\s*');
     return regex.hasMatch(input!.trim()) ? null : 'Invalid phone number';
   }
 

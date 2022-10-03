@@ -15,14 +15,14 @@ export 'auth.pb.dart';
 
 class AuthSvcClient extends $grpc.Client {
   static final _$createUser =
-      $grpc.ClientMethod<$0.CrowderUser, $0.CrowderUser>(
+      $grpc.ClientMethod<$0.CrowderUser, $0.AuthResponse>(
           '/crowder.AuthSvc/createUser',
           ($0.CrowderUser value) => value.writeToBuffer(),
-          ($core.List<$core.int> value) => $0.CrowderUser.fromBuffer(value));
-  static final _$getUser = $grpc.ClientMethod<$0.UserRequest, $0.CrowderUser>(
+          ($core.List<$core.int> value) => $0.AuthResponse.fromBuffer(value));
+  static final _$getUser = $grpc.ClientMethod<$0.UserRequest, $0.AuthResponse>(
       '/crowder.AuthSvc/getUser',
       ($0.UserRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.CrowderUser.fromBuffer(value));
+      ($core.List<$core.int> value) => $0.AuthResponse.fromBuffer(value));
   static final _$updateUser =
       $grpc.ClientMethod<$0.CrowderUser, $0.CrowderUser>(
           '/crowder.AuthSvc/updateUser',
@@ -43,18 +43,23 @@ class AuthSvcClient extends $grpc.Client {
       '/crowder.AuthSvc/login',
       ($0.LoginRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.AuthResponse.fromBuffer(value));
+  static final _$resetPassword =
+      $grpc.ClientMethod<$0.ResetPasswordRequest, $0.AuthResponse>(
+          '/crowder.AuthSvc/resetPassword',
+          ($0.ResetPasswordRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.AuthResponse.fromBuffer(value));
 
   AuthSvcClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
       $core.Iterable<$grpc.ClientInterceptor>? interceptors})
       : super(channel, options: options, interceptors: interceptors);
 
-  $grpc.ResponseFuture<$0.CrowderUser> createUser($0.CrowderUser request,
+  $grpc.ResponseFuture<$0.AuthResponse> createUser($0.CrowderUser request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createUser, request, options: options);
   }
 
-  $grpc.ResponseStream<$0.CrowderUser> getUser($0.UserRequest request,
+  $grpc.ResponseStream<$0.AuthResponse> getUser($0.UserRequest request,
       {$grpc.CallOptions? options}) {
     return $createStreamingCall(
         _$getUser, $async.Stream.fromIterable([request]),
@@ -82,26 +87,32 @@ class AuthSvcClient extends $grpc.Client {
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$login, request, options: options);
   }
+
+  $grpc.ResponseFuture<$0.AuthResponse> resetPassword(
+      $0.ResetPasswordRequest request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$resetPassword, request, options: options);
+  }
 }
 
 abstract class AuthSvcServiceBase extends $grpc.Service {
   $core.String get $name => 'crowder.AuthSvc';
 
   AuthSvcServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.CrowderUser, $0.CrowderUser>(
+    $addMethod($grpc.ServiceMethod<$0.CrowderUser, $0.AuthResponse>(
         'createUser',
         createUser_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.CrowderUser.fromBuffer(value),
-        ($0.CrowderUser value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.UserRequest, $0.CrowderUser>(
+        ($0.AuthResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.UserRequest, $0.AuthResponse>(
         'getUser',
         getUser_Pre,
         false,
         true,
         ($core.List<$core.int> value) => $0.UserRequest.fromBuffer(value),
-        ($0.CrowderUser value) => value.writeToBuffer()));
+        ($0.AuthResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.CrowderUser, $0.CrowderUser>(
         'updateUser',
         updateUser_Pre,
@@ -130,14 +141,22 @@ abstract class AuthSvcServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.LoginRequest.fromBuffer(value),
         ($0.AuthResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.ResetPasswordRequest, $0.AuthResponse>(
+        'resetPassword',
+        resetPassword_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.ResetPasswordRequest.fromBuffer(value),
+        ($0.AuthResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$0.CrowderUser> createUser_Pre(
+  $async.Future<$0.AuthResponse> createUser_Pre(
       $grpc.ServiceCall call, $async.Future<$0.CrowderUser> request) async {
     return createUser(call, await request);
   }
 
-  $async.Stream<$0.CrowderUser> getUser_Pre(
+  $async.Stream<$0.AuthResponse> getUser_Pre(
       $grpc.ServiceCall call, $async.Future<$0.UserRequest> request) async* {
     yield* getUser(call, await request);
   }
@@ -162,9 +181,14 @@ abstract class AuthSvcServiceBase extends $grpc.Service {
     return login(call, await request);
   }
 
-  $async.Future<$0.CrowderUser> createUser(
+  $async.Future<$0.AuthResponse> resetPassword_Pre($grpc.ServiceCall call,
+      $async.Future<$0.ResetPasswordRequest> request) async {
+    return resetPassword(call, await request);
+  }
+
+  $async.Future<$0.AuthResponse> createUser(
       $grpc.ServiceCall call, $0.CrowderUser request);
-  $async.Stream<$0.CrowderUser> getUser(
+  $async.Stream<$0.AuthResponse> getUser(
       $grpc.ServiceCall call, $0.UserRequest request);
   $async.Future<$0.CrowderUser> updateUser(
       $grpc.ServiceCall call, $0.CrowderUser request);
@@ -174,4 +198,6 @@ abstract class AuthSvcServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $0.GetUsersRequest request);
   $async.Future<$0.AuthResponse> login(
       $grpc.ServiceCall call, $0.LoginRequest request);
+  $async.Future<$0.AuthResponse> resetPassword(
+      $grpc.ServiceCall call, $0.ResetPasswordRequest request);
 }

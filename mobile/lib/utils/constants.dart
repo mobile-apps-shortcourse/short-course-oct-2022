@@ -10,3 +10,16 @@ const kLoadingAnimUrl =
 
 /// other
 const kFeatureUnderDev = 'The requested feature is under development';
+
+/// shared prefs
+class PrefUtils {
+  static const kUserIdKey = 'user.id';
+  static const kUserTokenKey = 'user.token';
+  static const kUserTypeKey = 'user.type';
+}
+
+/// error/ info messages
+class MessageUtils {
+  static const kConnectionIssueMessage =
+      'Oops...we have trouble reaching our servers. Please try again later';
+}
