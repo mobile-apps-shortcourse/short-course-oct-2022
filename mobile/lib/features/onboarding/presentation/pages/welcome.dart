@@ -39,6 +39,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
     return Scaffold(
       extendBody: true,
+      backgroundColor: context.colorScheme.surface,
       body: AnimatedColumn(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +50,7 @@ class _WelcomePageState extends State<WelcomePage> {
           kAppDesc
               .subtitle1(context,
                   alignment: TextAlign.center, emphasis: kEmphasisHigh)
-              .top(12)
+              .top(4)
               .horizontal(24),
         ],
       ).centered(),
@@ -73,7 +74,7 @@ class _WelcomePageState extends State<WelcomePage> {
               outlined: true,
               layoutSize: LayoutSize.wrapContent,
               onTap: () async => await showLoginSheet(context),
-            ).top(16),
+            ).top(12),
           ],
         ).horizontal(24).top(40),
       ),
