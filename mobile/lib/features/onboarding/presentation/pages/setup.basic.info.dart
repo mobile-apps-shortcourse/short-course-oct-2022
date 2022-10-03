@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mobile/app/route.gr.dart';
 import 'package:mobile/features/onboarding/presentation/manager/onboarding_cubit.dart';
 import 'package:mobile/features/shared/presentation/widgets/app.bar.dart';
 import 'package:mobile/protos/auth.pb.dart';
@@ -51,11 +52,12 @@ class _SetupBasicInfoPageState extends State<SetupBasicInfoPage> {
           }
 
           if (state is SuccessState<CrowderUser>) {
-            // todo => nav to home page
-            // context.router.pushAndPopUntil(route, predicate: predicate)
+            context.router.pushAndPopUntil(const DashboardRoute(),
+                predicate: (_) => false);
           }
         },
         child: Scaffold(
+          backgroundColor: context.colorScheme.surface,
           body: CrowderAppBar(
             title:
                 _currentPage == 0 ? 'Profile Information' : 'One more step...',

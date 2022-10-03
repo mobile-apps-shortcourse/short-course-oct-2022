@@ -12,6 +12,7 @@ class AuthRepository {
   final _prefs = Injector.get<SharedPreferences>(),
       _authClient = Injector.get<AuthSvcClient>();
 
+  /// create new user account
   Future<Either<CrowderUser, String>> createUser({
     required String displayName,
     required String username,
@@ -43,6 +44,7 @@ class AuthRepository {
     }
   }
 
+  /// sign out
   Future<void> logout() async {
     await _prefs.clear();
   }
