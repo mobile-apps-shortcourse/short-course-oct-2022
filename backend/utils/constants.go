@@ -1,12 +1,14 @@
 package utils
 
-import "fmt"
+import (
+	"fmt"
+	"os"
 
-const (
-	AppDatabaseName = "crowder"
+	"github.com/joho/godotenv"
 )
 
 // GetMongoUri => connection string for mongo atlas
 func GetMongoUri() string {
-	return fmt.Sprintf("mongodb+srv://bespa-admin:viBKvE2Ufh32YRQA@cluster0.hfgp5yk.mongodb.net/%s?retryWrites=true&w=majority", AppDatabaseName)
+	_ = godotenv.Load(".env")
+	return fmt.Sprintf("mongodb+srv://%s:%s@cluster0.hfgp5yk.mongodb.net/%s?retryWrites=true&w=majority", os.Getenv("MONGODB_USERNAME"), os.Getenv("MONGODB_PASSWORD"), os.Getenv("MONGODB_DB_NAME"))
 }

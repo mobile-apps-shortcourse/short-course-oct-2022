@@ -22,10 +22,19 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type VotingSvcClient interface {
-	CreateElection(ctx context.Context, in *Election, opts ...grpc.CallOption) (*VotingResponse, error)
-	UpdateElection(ctx context.Context, in *Election, opts ...grpc.CallOption) (*VotingResponse, error)
-	DeleteElection(ctx context.Context, in *DeleteElectionRequest, opts ...grpc.CallOption) (*VotingResponse, error)
-	GetElections(ctx context.Context, in *GetElectionsRequest, opts ...grpc.CallOption) (VotingSvc_GetElectionsClient, error)
+	// polls
+	CreatePoll(ctx context.Context, in *Poll, opts ...grpc.CallOption) (*VotingResponse, error)
+	UpdatePoll(ctx context.Context, in *Poll, opts ...grpc.CallOption) (*VotingResponse, error)
+	DeletePoll(ctx context.Context, in *DeleteVotingItemRequest, opts ...grpc.CallOption) (*VotingResponse, error)
+	GetPolls(ctx context.Context, in *GetPollsRequest, opts ...grpc.CallOption) (VotingSvc_GetPollsClient, error)
+	GetPoll(ctx context.Context, in *GetVotingItemRequest, opts ...grpc.CallOption) (VotingSvc_GetPollClient, error)
+	GetPollsForUser(ctx context.Context, in *GetPollsRequest, opts ...grpc.CallOption) (VotingSvc_GetPollsForUserClient, error)
+	// categories
+	CreateCategory(ctx context.Context, in *PollCategory, opts ...grpc.CallOption) (*VotingResponse, error)
+	UpdateCategory(ctx context.Context, in *PollCategory, opts ...grpc.CallOption) (*VotingResponse, error)
+	DeleteCategory(ctx context.Context, in *DeleteVotingItemRequest, opts ...grpc.CallOption) (*VotingResponse, error)
+	GetCategory(ctx context.Context, in *GetVotingItemRequest, opts ...grpc.CallOption) (*VotingResponse, error)
+	GetCategories(ctx context.Context, in *GetCategoriesRequest, opts ...grpc.CallOption) (VotingSvc_GetCategoriesClient, error)
 }
 
 type votingSvcClient struct {
@@ -36,39 +45,39 @@ func NewVotingSvcClient(cc grpc.ClientConnInterface) VotingSvcClient {
 	return &votingSvcClient{cc}
 }
 
-func (c *votingSvcClient) CreateElection(ctx context.Context, in *Election, opts ...grpc.CallOption) (*VotingResponse, error) {
+func (c *votingSvcClient) CreatePoll(ctx context.Context, in *Poll, opts ...grpc.CallOption) (*VotingResponse, error) {
 	out := new(VotingResponse)
-	err := c.cc.Invoke(ctx, "/crowder.VotingSvc/createElection", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/crowder.VotingSvc/createPoll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *votingSvcClient) UpdateElection(ctx context.Context, in *Election, opts ...grpc.CallOption) (*VotingResponse, error) {
+func (c *votingSvcClient) UpdatePoll(ctx context.Context, in *Poll, opts ...grpc.CallOption) (*VotingResponse, error) {
 	out := new(VotingResponse)
-	err := c.cc.Invoke(ctx, "/crowder.VotingSvc/updateElection", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/crowder.VotingSvc/updatePoll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *votingSvcClient) DeleteElection(ctx context.Context, in *DeleteElectionRequest, opts ...grpc.CallOption) (*VotingResponse, error) {
+func (c *votingSvcClient) DeletePoll(ctx context.Context, in *DeleteVotingItemRequest, opts ...grpc.CallOption) (*VotingResponse, error) {
 	out := new(VotingResponse)
-	err := c.cc.Invoke(ctx, "/crowder.VotingSvc/deleteElection", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/crowder.VotingSvc/deletePoll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *votingSvcClient) GetElections(ctx context.Context, in *GetElectionsRequest, opts ...grpc.CallOption) (VotingSvc_GetElectionsClient, error) {
-	stream, err := c.cc.NewStream(ctx, &VotingSvc_ServiceDesc.Streams[0], "/crowder.VotingSvc/getElections", opts...)
+func (c *votingSvcClient) GetPolls(ctx context.Context, in *GetPollsRequest, opts ...grpc.CallOption) (VotingSvc_GetPollsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &VotingSvc_ServiceDesc.Streams[0], "/crowder.VotingSvc/getPolls", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &votingSvcGetElectionsClient{stream}
+	x := &votingSvcGetPollsClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -78,17 +87,149 @@ func (c *votingSvcClient) GetElections(ctx context.Context, in *GetElectionsRequ
 	return x, nil
 }
 
-type VotingSvc_GetElectionsClient interface {
-	Recv() (*GetElectionsResponse, error)
+type VotingSvc_GetPollsClient interface {
+	Recv() (*GetPollsResponse, error)
 	grpc.ClientStream
 }
 
-type votingSvcGetElectionsClient struct {
+type votingSvcGetPollsClient struct {
 	grpc.ClientStream
 }
 
-func (x *votingSvcGetElectionsClient) Recv() (*GetElectionsResponse, error) {
-	m := new(GetElectionsResponse)
+func (x *votingSvcGetPollsClient) Recv() (*GetPollsResponse, error) {
+	m := new(GetPollsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *votingSvcClient) GetPoll(ctx context.Context, in *GetVotingItemRequest, opts ...grpc.CallOption) (VotingSvc_GetPollClient, error) {
+	stream, err := c.cc.NewStream(ctx, &VotingSvc_ServiceDesc.Streams[1], "/crowder.VotingSvc/getPoll", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &votingSvcGetPollClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type VotingSvc_GetPollClient interface {
+	Recv() (*GetPollsResponse, error)
+	grpc.ClientStream
+}
+
+type votingSvcGetPollClient struct {
+	grpc.ClientStream
+}
+
+func (x *votingSvcGetPollClient) Recv() (*GetPollsResponse, error) {
+	m := new(GetPollsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *votingSvcClient) GetPollsForUser(ctx context.Context, in *GetPollsRequest, opts ...grpc.CallOption) (VotingSvc_GetPollsForUserClient, error) {
+	stream, err := c.cc.NewStream(ctx, &VotingSvc_ServiceDesc.Streams[2], "/crowder.VotingSvc/getPollsForUser", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &votingSvcGetPollsForUserClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type VotingSvc_GetPollsForUserClient interface {
+	Recv() (*GetPollsResponse, error)
+	grpc.ClientStream
+}
+
+type votingSvcGetPollsForUserClient struct {
+	grpc.ClientStream
+}
+
+func (x *votingSvcGetPollsForUserClient) Recv() (*GetPollsResponse, error) {
+	m := new(GetPollsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *votingSvcClient) CreateCategory(ctx context.Context, in *PollCategory, opts ...grpc.CallOption) (*VotingResponse, error) {
+	out := new(VotingResponse)
+	err := c.cc.Invoke(ctx, "/crowder.VotingSvc/createCategory", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *votingSvcClient) UpdateCategory(ctx context.Context, in *PollCategory, opts ...grpc.CallOption) (*VotingResponse, error) {
+	out := new(VotingResponse)
+	err := c.cc.Invoke(ctx, "/crowder.VotingSvc/updateCategory", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *votingSvcClient) DeleteCategory(ctx context.Context, in *DeleteVotingItemRequest, opts ...grpc.CallOption) (*VotingResponse, error) {
+	out := new(VotingResponse)
+	err := c.cc.Invoke(ctx, "/crowder.VotingSvc/deleteCategory", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *votingSvcClient) GetCategory(ctx context.Context, in *GetVotingItemRequest, opts ...grpc.CallOption) (*VotingResponse, error) {
+	out := new(VotingResponse)
+	err := c.cc.Invoke(ctx, "/crowder.VotingSvc/getCategory", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *votingSvcClient) GetCategories(ctx context.Context, in *GetCategoriesRequest, opts ...grpc.CallOption) (VotingSvc_GetCategoriesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &VotingSvc_ServiceDesc.Streams[3], "/crowder.VotingSvc/getCategories", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &votingSvcGetCategoriesClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type VotingSvc_GetCategoriesClient interface {
+	Recv() (*GetCategoriesResponse, error)
+	grpc.ClientStream
+}
+
+type votingSvcGetCategoriesClient struct {
+	grpc.ClientStream
+}
+
+func (x *votingSvcGetCategoriesClient) Recv() (*GetCategoriesResponse, error) {
+	m := new(GetCategoriesResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -99,10 +240,19 @@ func (x *votingSvcGetElectionsClient) Recv() (*GetElectionsResponse, error) {
 // All implementations must embed UnimplementedVotingSvcServer
 // for forward compatibility
 type VotingSvcServer interface {
-	CreateElection(context.Context, *Election) (*VotingResponse, error)
-	UpdateElection(context.Context, *Election) (*VotingResponse, error)
-	DeleteElection(context.Context, *DeleteElectionRequest) (*VotingResponse, error)
-	GetElections(*GetElectionsRequest, VotingSvc_GetElectionsServer) error
+	// polls
+	CreatePoll(context.Context, *Poll) (*VotingResponse, error)
+	UpdatePoll(context.Context, *Poll) (*VotingResponse, error)
+	DeletePoll(context.Context, *DeleteVotingItemRequest) (*VotingResponse, error)
+	GetPolls(*GetPollsRequest, VotingSvc_GetPollsServer) error
+	GetPoll(*GetVotingItemRequest, VotingSvc_GetPollServer) error
+	GetPollsForUser(*GetPollsRequest, VotingSvc_GetPollsForUserServer) error
+	// categories
+	CreateCategory(context.Context, *PollCategory) (*VotingResponse, error)
+	UpdateCategory(context.Context, *PollCategory) (*VotingResponse, error)
+	DeleteCategory(context.Context, *DeleteVotingItemRequest) (*VotingResponse, error)
+	GetCategory(context.Context, *GetVotingItemRequest) (*VotingResponse, error)
+	GetCategories(*GetCategoriesRequest, VotingSvc_GetCategoriesServer) error
 	mustEmbedUnimplementedVotingSvcServer()
 }
 
@@ -110,17 +260,38 @@ type VotingSvcServer interface {
 type UnimplementedVotingSvcServer struct {
 }
 
-func (UnimplementedVotingSvcServer) CreateElection(context.Context, *Election) (*VotingResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateElection not implemented")
+func (UnimplementedVotingSvcServer) CreatePoll(context.Context, *Poll) (*VotingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePoll not implemented")
 }
-func (UnimplementedVotingSvcServer) UpdateElection(context.Context, *Election) (*VotingResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateElection not implemented")
+func (UnimplementedVotingSvcServer) UpdatePoll(context.Context, *Poll) (*VotingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePoll not implemented")
 }
-func (UnimplementedVotingSvcServer) DeleteElection(context.Context, *DeleteElectionRequest) (*VotingResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteElection not implemented")
+func (UnimplementedVotingSvcServer) DeletePoll(context.Context, *DeleteVotingItemRequest) (*VotingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeletePoll not implemented")
 }
-func (UnimplementedVotingSvcServer) GetElections(*GetElectionsRequest, VotingSvc_GetElectionsServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetElections not implemented")
+func (UnimplementedVotingSvcServer) GetPolls(*GetPollsRequest, VotingSvc_GetPollsServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetPolls not implemented")
+}
+func (UnimplementedVotingSvcServer) GetPoll(*GetVotingItemRequest, VotingSvc_GetPollServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetPoll not implemented")
+}
+func (UnimplementedVotingSvcServer) GetPollsForUser(*GetPollsRequest, VotingSvc_GetPollsForUserServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetPollsForUser not implemented")
+}
+func (UnimplementedVotingSvcServer) CreateCategory(context.Context, *PollCategory) (*VotingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateCategory not implemented")
+}
+func (UnimplementedVotingSvcServer) UpdateCategory(context.Context, *PollCategory) (*VotingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateCategory not implemented")
+}
+func (UnimplementedVotingSvcServer) DeleteCategory(context.Context, *DeleteVotingItemRequest) (*VotingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteCategory not implemented")
+}
+func (UnimplementedVotingSvcServer) GetCategory(context.Context, *GetVotingItemRequest) (*VotingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCategory not implemented")
+}
+func (UnimplementedVotingSvcServer) GetCategories(*GetCategoriesRequest, VotingSvc_GetCategoriesServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetCategories not implemented")
 }
 func (UnimplementedVotingSvcServer) mustEmbedUnimplementedVotingSvcServer() {}
 
@@ -135,78 +306,213 @@ func RegisterVotingSvcServer(s grpc.ServiceRegistrar, srv VotingSvcServer) {
 	s.RegisterService(&VotingSvc_ServiceDesc, srv)
 }
 
-func _VotingSvc_CreateElection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Election)
+func _VotingSvc_CreatePoll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Poll)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(VotingSvcServer).CreateElection(ctx, in)
+		return srv.(VotingSvcServer).CreatePoll(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/crowder.VotingSvc/createElection",
+		FullMethod: "/crowder.VotingSvc/createPoll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VotingSvcServer).CreateElection(ctx, req.(*Election))
+		return srv.(VotingSvcServer).CreatePoll(ctx, req.(*Poll))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VotingSvc_UpdateElection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Election)
+func _VotingSvc_UpdatePoll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Poll)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(VotingSvcServer).UpdateElection(ctx, in)
+		return srv.(VotingSvcServer).UpdatePoll(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/crowder.VotingSvc/updateElection",
+		FullMethod: "/crowder.VotingSvc/updatePoll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VotingSvcServer).UpdateElection(ctx, req.(*Election))
+		return srv.(VotingSvcServer).UpdatePoll(ctx, req.(*Poll))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VotingSvc_DeleteElection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteElectionRequest)
+func _VotingSvc_DeletePoll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteVotingItemRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(VotingSvcServer).DeleteElection(ctx, in)
+		return srv.(VotingSvcServer).DeletePoll(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/crowder.VotingSvc/deleteElection",
+		FullMethod: "/crowder.VotingSvc/deletePoll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VotingSvcServer).DeleteElection(ctx, req.(*DeleteElectionRequest))
+		return srv.(VotingSvcServer).DeletePoll(ctx, req.(*DeleteVotingItemRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VotingSvc_GetElections_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(GetElectionsRequest)
+func _VotingSvc_GetPolls_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetPollsRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(VotingSvcServer).GetElections(m, &votingSvcGetElectionsServer{stream})
+	return srv.(VotingSvcServer).GetPolls(m, &votingSvcGetPollsServer{stream})
 }
 
-type VotingSvc_GetElectionsServer interface {
-	Send(*GetElectionsResponse) error
+type VotingSvc_GetPollsServer interface {
+	Send(*GetPollsResponse) error
 	grpc.ServerStream
 }
 
-type votingSvcGetElectionsServer struct {
+type votingSvcGetPollsServer struct {
 	grpc.ServerStream
 }
 
-func (x *votingSvcGetElectionsServer) Send(m *GetElectionsResponse) error {
+func (x *votingSvcGetPollsServer) Send(m *GetPollsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _VotingSvc_GetPoll_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetVotingItemRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(VotingSvcServer).GetPoll(m, &votingSvcGetPollServer{stream})
+}
+
+type VotingSvc_GetPollServer interface {
+	Send(*GetPollsResponse) error
+	grpc.ServerStream
+}
+
+type votingSvcGetPollServer struct {
+	grpc.ServerStream
+}
+
+func (x *votingSvcGetPollServer) Send(m *GetPollsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _VotingSvc_GetPollsForUser_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetPollsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(VotingSvcServer).GetPollsForUser(m, &votingSvcGetPollsForUserServer{stream})
+}
+
+type VotingSvc_GetPollsForUserServer interface {
+	Send(*GetPollsResponse) error
+	grpc.ServerStream
+}
+
+type votingSvcGetPollsForUserServer struct {
+	grpc.ServerStream
+}
+
+func (x *votingSvcGetPollsForUserServer) Send(m *GetPollsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _VotingSvc_CreateCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PollCategory)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VotingSvcServer).CreateCategory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/crowder.VotingSvc/createCategory",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VotingSvcServer).CreateCategory(ctx, req.(*PollCategory))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _VotingSvc_UpdateCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PollCategory)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VotingSvcServer).UpdateCategory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/crowder.VotingSvc/updateCategory",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VotingSvcServer).UpdateCategory(ctx, req.(*PollCategory))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _VotingSvc_DeleteCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteVotingItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VotingSvcServer).DeleteCategory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/crowder.VotingSvc/deleteCategory",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VotingSvcServer).DeleteCategory(ctx, req.(*DeleteVotingItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _VotingSvc_GetCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetVotingItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VotingSvcServer).GetCategory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/crowder.VotingSvc/getCategory",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VotingSvcServer).GetCategory(ctx, req.(*GetVotingItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _VotingSvc_GetCategories_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetCategoriesRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(VotingSvcServer).GetCategories(m, &votingSvcGetCategoriesServer{stream})
+}
+
+type VotingSvc_GetCategoriesServer interface {
+	Send(*GetCategoriesResponse) error
+	grpc.ServerStream
+}
+
+type votingSvcGetCategoriesServer struct {
+	grpc.ServerStream
+}
+
+func (x *votingSvcGetCategoriesServer) Send(m *GetCategoriesResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -218,22 +524,53 @@ var VotingSvc_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*VotingSvcServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "createElection",
-			Handler:    _VotingSvc_CreateElection_Handler,
+			MethodName: "createPoll",
+			Handler:    _VotingSvc_CreatePoll_Handler,
 		},
 		{
-			MethodName: "updateElection",
-			Handler:    _VotingSvc_UpdateElection_Handler,
+			MethodName: "updatePoll",
+			Handler:    _VotingSvc_UpdatePoll_Handler,
 		},
 		{
-			MethodName: "deleteElection",
-			Handler:    _VotingSvc_DeleteElection_Handler,
+			MethodName: "deletePoll",
+			Handler:    _VotingSvc_DeletePoll_Handler,
+		},
+		{
+			MethodName: "createCategory",
+			Handler:    _VotingSvc_CreateCategory_Handler,
+		},
+		{
+			MethodName: "updateCategory",
+			Handler:    _VotingSvc_UpdateCategory_Handler,
+		},
+		{
+			MethodName: "deleteCategory",
+			Handler:    _VotingSvc_DeleteCategory_Handler,
+		},
+		{
+			MethodName: "getCategory",
+			Handler:    _VotingSvc_GetCategory_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "getElections",
-			Handler:       _VotingSvc_GetElections_Handler,
+			StreamName:    "getPolls",
+			Handler:       _VotingSvc_GetPolls_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "getPoll",
+			Handler:       _VotingSvc_GetPoll_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "getPollsForUser",
+			Handler:       _VotingSvc_GetPollsForUser_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "getCategories",
+			Handler:       _VotingSvc_GetCategories_Handler,
 			ServerStreams: true,
 		},
 	},

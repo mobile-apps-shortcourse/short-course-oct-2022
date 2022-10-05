@@ -2,12 +2,15 @@ package utils
 
 import (
 	"context"
+	"log"
+	"os"
+	"time"
+
 	codecs "github.com/amsokol/mongo-go-driver-protobuf"
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	dbOpts "go.mongodb.org/mongo-driver/mongo/options"
-	"log"
-	"time"
 )
 
 // GetMongoClient
@@ -28,6 +31,14 @@ func GetMongoClient() *mongo.Database {
 	if err != nil {
 		log.Fatal(err)
 	}
+	_ = godotenv.Load(".env")
 
-	return client.Database(AppDatabaseName, nil)
+	return client.Database(os.Getenv("MONGODB_DB_NAME"), nil)
 }
+
+// collections in database
+var (
+	AccountCol  = GetMongoClient().Collection("crowder-accounts")
+	PollCol     = GetMongoClient().Collection("crowder-polls")
+	CategoryCol = GetMongoClient().Collection("crowder-categories")
+)

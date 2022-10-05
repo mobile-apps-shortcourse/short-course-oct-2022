@@ -5,36 +5,77 @@ package crowder;
 option go_package = "crowder.com;ms";
 
 service VotingSvc {
-  rpc createElection(Election) returns (VotingResponse);
-  rpc updateElection(Election) returns (VotingResponse);
-  rpc deleteElection(DeleteElectionRequest) returns (VotingResponse);
-  rpc getElections(GetElectionsRequest) returns (stream GetElectionsResponse);
+  // polls
+  rpc createPoll(Poll) returns (VotingResponse);
+  rpc updatePoll(Poll) returns (VotingResponse);
+  rpc deletePoll(DeleteVotingItemRequest) returns (VotingResponse);
+  rpc getPolls(GetPollsRequest) returns (stream GetPollsResponse);
+  rpc getPoll(GetVotingItemRequest) returns (stream GetPollsResponse);
+  rpc getPollsForUser(GetPollsRequest) returns (stream GetPollsResponse);
+
+  // categories
+  rpc createCategory(PollCategory) returns (VotingResponse);
+  rpc updateCategory(PollCategory) returns (VotingResponse);
+  rpc deleteCategory(DeleteVotingItemRequest) returns (VotingResponse);
+  rpc getCategory(GetVotingItemRequest) returns (VotingResponse);
+  rpc getCategories(GetCategoriesRequest) returns (stream GetCategoriesResponse);
 }
 
-message Election {
+message Poll {
   string id = 1;
   string title = 2;
   string organizer = 3;
   repeated string categories = 4;
-  ElectionStatus status = 5;
-  google.protobuf.Timestamp startTimestamp = 7;
-  google.protobuf.Timestamp endTimestamp = 8;
+  PollStatus status = 5;
+  string description = 6;
+  repeated PollCandidate candidates = 7;
+  google.protobuf.Timestamp startTimestamp = 8;
+  google.protobuf.Timestamp endTimestamp = 9;
 }
 
-enum ElectionStatus {
+// category for each poll
+message PollCategory {
+  string id = 1;
+  string name = 2;
+  string bannerImage = 3; // optional
+}
+
+message PollCandidate {
+  string candidate = 1;
+  string category = 2;
+  repeated string votes = 3;
+}
+
+enum PollStatus {
   pending = 0;
   active = 1;
   expired = 2;
   unknown = 3;
 }
-message GetElectionsResponse { repeated Election elections = 1; }
+message GetPollsResponse { repeated Poll polls = 1; }
 
-message GetElectionsRequest { ElectionStatus status = 1; }
+message GetPollsRequest {
+  PollStatus status = 1;
+  string userId = 2;
+}
 
-message DeleteElectionRequest { string id = 1; }
+message GetCategoriesRequest {
+  string poll = 1;
+}
+
+message GetVotingItemRequest {
+  string id = 1;
+}
+
+message GetCategoriesResponse {
+  repeated PollCategory categories = 1;
+}
+
+message DeleteVotingItemRequest { string id = 1; }
 
 message VotingResponse {
   bool successful = 1;
   string message = 2;
-  Election election = 3;
+  Poll poll = 3;
+  PollCategory category = 4;
 }
