@@ -2,8 +2,9 @@ package services
 
 import (
 	"context"
-	pb "crowder.com/generated"
 	"fmt"
+
+	pb "crowder.com/generated"
 )
 
 // AuthSvcServer => grpc server implementation
@@ -14,7 +15,7 @@ type AuthSvcServer struct {
 // TODO
 func (s *AuthSvcServer) CreateUser(ctx context.Context, request *pb.CrowderUser) (*pb.AuthResponse, error) {
 	response := &pb.AuthResponse{}
-	fmt.Printf("creating new user with details => %v", request)
+	fmt.Printf("creating new user with details => %v", request.GetDisplayName())
 	response.Message = "This service is currently unavailable"
 	response.Successful = true
 	return response, nil

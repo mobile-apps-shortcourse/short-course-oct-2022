@@ -2,7 +2,6 @@
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mobile/app/route.gr.dart';
 import 'package:mobile/utils/constants.dart';
 import 'package:mobile/utils/dialogs.dart';
@@ -22,19 +21,6 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(
-    //   SystemUiOverlayStyle(
-    //     statusBarColor: context.colorScheme.background,
-    //     systemNavigationBarColor: context.colorScheme.background,
-    //     statusBarIconBrightness: context.invertedThemeBrightness,
-    //     systemNavigationBarDividerColor: context.colorScheme.background,
-    //     systemNavigationBarIconBrightness: context.invertedThemeBrightness,
-    //     statusBarBrightness: context.theme.brightness,
-    //     systemStatusBarContrastEnforced: false,
-    //     systemNavigationBarContrastEnforced: false,
-    //   ),
-    // );
-
     kUseDefaultOverlays(context, statusBarBrightness: context.theme.brightness);
 
     return Scaffold(

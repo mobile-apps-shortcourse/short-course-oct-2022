@@ -49,8 +49,7 @@ Future<void> showLoginSheet(BuildContext context) async {
                     alignment: TextAlign.center,
                     color: context.colorScheme.onBackground,
                     emphasis: kEmphasisHigh)
-                .top(8),
-            const Divider(),
+                .vertical(8),
           ],
         ).top(16),
       ).fillMaxWidth(context),

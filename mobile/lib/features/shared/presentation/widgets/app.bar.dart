@@ -71,7 +71,7 @@ class _CrowderAppBarState extends State<CrowderAppBar> {
           if (widget.showBackButton) ...{
             AnimatedPositioned(
               duration: kSidebarDuration,
-              top: context.height * 0.04,
+              top: context.height * 0.05,
               left: widget.showBackButton ? 12 : -context.width * 0.2,
               child: SafeArea(
                 bottom: false,
