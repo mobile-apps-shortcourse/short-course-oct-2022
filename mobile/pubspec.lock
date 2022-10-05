@@ -847,10 +847,10 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "75b3ade65e4ee44713c471acdacf93faa41c84a3"
+      resolved-ref: "792c509b801c0e88195305d1f5ab63d86db8dd36"
       url: "https://github.com/quabynah-bilson/shared_utils.git"
     source: git
-    version: "0.0.21-dev.21"
+    version: "0.0.22-dev.22"
   shelf:
     dependency: transitive
     description:

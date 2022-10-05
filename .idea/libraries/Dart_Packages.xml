@@ -852,7 +852,7 @@
         <entry key="shared_utils">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/git/shared_utils-75b3ade65e4ee44713c471acdacf93faa41c84a3//lib" />
+              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/git/shared_utils-792c509b801c0e88195305d1f5ab63d86db8dd36//lib" />
             </list>
           </value>
         </entry>
@@ -1069,7 +1069,7 @@
       </option>
     </properties>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/git/shared_utils-75b3ade65e4ee44713c471acdacf93faa41c84a3//lib" />
+      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/git/shared_utils-792c509b801c0e88195305d1f5ab63d86db8dd36//lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/_fe_analyzer_shared-38.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-3.4.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/archive-3.3.1/lib" />

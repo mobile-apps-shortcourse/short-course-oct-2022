@@ -86,6 +86,7 @@ class _SetupBasicInfoPageState extends State<SetupBasicInfoPage> {
           bottomNavigationBar: SafeArea(
             top: false,
             child: AppRoundedButton(
+              enabled: !_loading,
               text: _currentPage == 0 ? 'Next' : 'Save & Continue',
               onTap: () {
                 if (_currentPage == 0) {

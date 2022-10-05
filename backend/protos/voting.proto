@@ -1,7 +1,40 @@
 syntax = "proto3";
-//import "google/protobuf/timestamp.proto";
-//import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+// import "google/protobuf/empty.proto";
 package crowder;
 option go_package = "crowder.com;ms";
 
-service VotingSvc {}
+service VotingSvc {
+  rpc createElection(Election) returns (VotingResponse);
+  rpc updateElection(Election) returns (VotingResponse);
+  rpc deleteElection(DeleteElectionRequest) returns (VotingResponse);
+  rpc getElections(GetElectionsRequest) returns (stream GetElectionsResponse);
+}
+
+message Election {
+  string id = 1;
+  string title = 2;
+  string organizer = 3;
+  repeated string categories = 4;
+  ElectionStatus status = 5;
+  google.protobuf.Timestamp startTimestamp = 7;
+  google.protobuf.Timestamp endTimestamp = 8;
+}
+
+enum ElectionStatus {
+  pending = 0;
+  active = 1;
+  expired = 2;
+  unknown = 3;
+}
+message GetElectionsResponse { repeated Election elections = 1; }
+
+message GetElectionsRequest { ElectionStatus status = 1; }
+
+message DeleteElectionRequest { string id = 1; }
+
+message VotingResponse {
+  bool successful = 1;
+  string message = 2;
+  Election election = 3;
+}

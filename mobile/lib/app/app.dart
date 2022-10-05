@@ -43,8 +43,12 @@ class _CrowderAppState extends State<CrowderApp> {
                 surface: kWhiteColor,
               ),
             ),
-            darkTheme: _darkTheme,
-            themeMode: ThemeMode.system,
+            darkTheme: _darkTheme.copyWith(
+              colorScheme: _darkTheme.colorScheme.copyWith(
+                onSurface: kWhiteColor,
+              ),
+            ),
+            themeMode: ThemeMode.light,
 
             /// router config per documentation
             routeInformationParser: _appRouter.defaultRouteParser(),

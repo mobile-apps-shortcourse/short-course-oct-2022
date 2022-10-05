@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/features/election/presentation/widgets/bottom.nav.dart';
 import 'package:mobile/utils/constants.dart';
 import 'package:shared_utils/shared_utils.dart';
 
@@ -17,119 +18,38 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  final _iconSize = 28.0;
+  var _currentTabIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     kUseDefaultOverlays(context, statusBarBrightness: context.theme.brightness);
 
     return Scaffold(
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-        decoration: BoxDecoration(
-            color: context.colorScheme.surface,
-            borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(40), topLeft: Radius.circular(40))),
-        child: SafeArea(
-          top: false,
-          child: AnimatedRow(
-            animateType: AnimateType.slideUp,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              /// home
-              GestureDetector(
-                onTap: () => context.showCustomDialog(
-                    headerIconAsset: kAppLogo, message: kFeatureUnderDev),
-                child: AnimatedColumn(
-                  duration: 850,
-                  children: [
-                    Icon(Icons.add_home_outlined,
-                        size: _iconSize, color: context.colorScheme.secondary),
-                    'Home'
-                        .button(context,
-                            color: context.colorScheme.secondary,
-                            weight: FontWeight.w600)
-                        .top(8),
-                  ],
-                ),
-              ),
-
-              /// search
-              GestureDetector(
-                onTap: () => context.showCustomDialog(
-                    headerIconAsset: kAppLogo, message: kFeatureUnderDev),
-                child: AnimatedColumn(
-                  duration: 850,
-                  children: [
-                    Icon(FeatherIcons.search,
-                        size: _iconSize, color: context.theme.disabledColor),
-                    'Search'
-                        .button(context,
-                            color: context.theme.disabledColor,
-                            weight: FontWeight.w600)
-                        .top(8),
-                  ],
-                ),
-              ),
-
-              /// contest
-              GestureDetector(
-                onTap: () => context.showCustomDialog(
-                    headerIconAsset: kAppLogo, message: kFeatureUnderDev),
-                child: AnimatedColumn(
-                  duration: 850,
-                  children: [
-                    Icon(Icons.add_box_outlined,
-                        size: _iconSize, color: context.theme.disabledColor),
-                    'Contest'
-                        .button(context,
-                            color: context.theme.disabledColor,
-                            weight: FontWeight.w600)
-                        .top(8),
-                  ],
-                ),
-              ),
-
-              /// activity
-              GestureDetector(
-                onTap: () => context.showCustomDialog(
-                    headerIconAsset: kAppLogo, message: kFeatureUnderDev),
-                child: AnimatedColumn(
-                  animateType: AnimateType.slideUp,
-                  duration: 850,
-                  children: [
-                    Icon(Icons.favorite_border_outlined,
-                        size: _iconSize, color: context.theme.disabledColor),
-                    'Activity'
-                        .button(context,
-                            color: context.theme.disabledColor,
-                            weight: FontWeight.w600)
-                        .top(8),
-                  ],
-                ),
-              ),
-
-              /// profile
-              GestureDetector(
-                onTap: () => context.showCustomDialog(
-                    headerIconAsset: kAppLogo, message: kFeatureUnderDev),
-                child: AnimatedColumn(
-                  animateType: AnimateType.slideUp,
-                  duration: 850,
-                  children: [
-                    Icon(FeatherIcons.user,
-                        size: _iconSize, color: context.theme.disabledColor),
-                    'Profile'
-                        .button(context,
-                            color: context.theme.disabledColor,
-                            weight: FontWeight.w600)
-                        .top(8),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+      bottomNavigationBar: CrowderBottomNavigationView(
+        onTap: (index) => setState(() => _currentTabIndex = index),
+        activeIndex: _currentTabIndex,
+        items: const [
+          CrowderBottomNavigationViewItem(
+              activeIcon: Icons.add_home,
+              inactiveIcon: Icons.add_home_outlined,
+              label: 'Home'),
+          CrowderBottomNavigationViewItem(
+              activeIcon: FeatherIcons.search,
+              inactiveIcon: FeatherIcons.search,
+              label: 'Search'),
+          CrowderBottomNavigationViewItem(
+              activeIcon: Icons.add_box,
+              inactiveIcon: Icons.add_box_outlined,
+              label: 'Contests'),
+          CrowderBottomNavigationViewItem(
+              activeIcon: Icons.favorite,
+              inactiveIcon: Icons.favorite_border_outlined,
+              label: 'Activity'),
+          CrowderBottomNavigationViewItem(
+              activeIcon: FeatherIcons.user,
+              inactiveIcon: FeatherIcons.user,
+              label: 'Profile'),
+        ],
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () => context.showCustomDialog(
