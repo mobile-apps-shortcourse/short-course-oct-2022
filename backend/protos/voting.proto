@@ -10,7 +10,7 @@ service VotingSvc {
   rpc updatePoll(Poll) returns (VotingResponse);
   rpc deletePoll(DeleteVotingItemRequest) returns (VotingResponse);
   rpc getPolls(GetPollsRequest) returns (stream GetPollsResponse);
-  rpc getPoll(GetVotingItemRequest) returns (stream GetPollsResponse);
+  rpc getPoll(GetVotingItemRequest) returns (stream VotingResponse);
   rpc getPollsForUser(GetPollsRequest) returns (stream GetPollsResponse);
 
   // categories
@@ -38,6 +38,7 @@ message PollCategory {
   string id = 1;
   string name = 2;
   string bannerImage = 3; // optional
+  string poll = 4; // optional
 }
 
 message PollCandidate {
@@ -57,6 +58,7 @@ message GetPollsResponse { repeated Poll polls = 1; }
 message GetPollsRequest {
   PollStatus status = 1;
   string userId = 2;
+  int32 userType = 3;
 }
 
 message GetCategoriesRequest {

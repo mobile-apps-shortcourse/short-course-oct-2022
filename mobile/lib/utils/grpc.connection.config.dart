@@ -8,8 +8,8 @@ class GrpcConnectionConfig {
 
   // final _kBaseUrl = "192.168.10.15";
   // final _kBaseUrl = "172.20.10.2";
-  final _kBaseUrl = "192.168.0.170";
-  // final _kBaseUrl = "169.254.139.213";
+  // final _kBaseUrl = "192.168.0.170";
+  final _kBaseUrl = "192.168.10.37";
 
   late final _connectionOptions = const ChannelOptions(
     credentials: ChannelCredentials.insecure(),

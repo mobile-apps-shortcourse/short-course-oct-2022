@@ -120,7 +120,7 @@ func (c *votingSvcClient) GetPoll(ctx context.Context, in *GetVotingItemRequest,
 }
 
 type VotingSvc_GetPollClient interface {
-	Recv() (*GetPollsResponse, error)
+	Recv() (*VotingResponse, error)
 	grpc.ClientStream
 }
 
@@ -128,8 +128,8 @@ type votingSvcGetPollClient struct {
 	grpc.ClientStream
 }
 
-func (x *votingSvcGetPollClient) Recv() (*GetPollsResponse, error) {
-	m := new(GetPollsResponse)
+func (x *votingSvcGetPollClient) Recv() (*VotingResponse, error) {
+	m := new(VotingResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -390,7 +390,7 @@ func _VotingSvc_GetPoll_Handler(srv interface{}, stream grpc.ServerStream) error
 }
 
 type VotingSvc_GetPollServer interface {
-	Send(*GetPollsResponse) error
+	Send(*VotingResponse) error
 	grpc.ServerStream
 }
 
@@ -398,7 +398,7 @@ type votingSvcGetPollServer struct {
 	grpc.ServerStream
 }
 
-func (x *votingSvcGetPollServer) Send(m *GetPollsResponse) error {
+func (x *votingSvcGetPollServer) Send(m *VotingResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
