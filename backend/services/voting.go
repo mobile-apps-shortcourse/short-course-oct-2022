@@ -285,22 +285,6 @@ func (s *VotingSvcServer) GetPoll(request *pb.GetVotingItemRequest, srv pb.Votin
 // retrieves all polls created / participated by user
 func (s *VotingSvcServer) GetPollsForUser(request *pb.GetPollsRequest, srv pb.VotingSvc_GetPollsForUserServer) error {
 	ctx, response := srv.Context(), &pb.GetPollsResponse{}
-	// var pollsFilter bson.M
-
-	// switch request.GetUserType() {
-	// case int32(pb.UserType_voter):
-	// 	// filter all polls for voter
-	// 	pollsFilter = bson.M{"candidates": bson.M{"$match": bson.M{"votes": bson.M{"$elemMatch": request.GetUserId()}}}}
-
-	// case int32(pb.UserType_candidate):
-	// 	// filter all polls for candidate
-	// 	pollsFilter = bson.M{}
-
-	// default:
-	// 	// filter all polls for organizer
-	// 	pollsFilter = bson.M{}
-
-	// }
 
 	// get all polls
 	if cursor, err := utils.PollCol.Find(ctx, bson.D{}); err == nil {

@@ -88,11 +88,12 @@ const ResetPasswordRequest$json = const {
   '2': const [
     const {'1': 'oldPassword', '3': 1, '4': 1, '5': 9, '10': 'oldPassword'},
     const {'1': 'newPassword', '3': 2, '4': 1, '5': 9, '10': 'newPassword'},
+    const {'1': 'username', '3': 3, '4': 1, '5': 9, '10': 'username'},
   ],
 };
 
 /// Descriptor for `ResetPasswordRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List resetPasswordRequestDescriptor = $convert.base64Decode('ChRSZXNldFBhc3N3b3JkUmVxdWVzdBIgCgtvbGRQYXNzd29yZBgBIAEoCVILb2xkUGFzc3dvcmQSIAoLbmV3UGFzc3dvcmQYAiABKAlSC25ld1Bhc3N3b3Jk');
+final $typed_data.Uint8List resetPasswordRequestDescriptor = $convert.base64Decode('ChRSZXNldFBhc3N3b3JkUmVxdWVzdBIgCgtvbGRQYXNzd29yZBgBIAEoCVILb2xkUGFzc3dvcmQSIAoLbmV3UGFzc3dvcmQYAiABKAlSC25ld1Bhc3N3b3JkEhoKCHVzZXJuYW1lGAMgASgJUgh1c2VybmFtZQ==');
 @$core.Deprecated('Use userRequestDescriptor instead')
 const UserRequest$json = const {
   '1': 'UserRequest',

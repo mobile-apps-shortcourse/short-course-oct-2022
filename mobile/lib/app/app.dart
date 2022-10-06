@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/app/route.gr.dart';
 import 'package:mobile/features/onboarding/presentation/manager/onboarding_cubit.dart';
+import 'package:mobile/features/shared/presentation/manager/poll_cubit.dart';
 import 'package:mobile/features/shared/presentation/manager/user_cubit.dart';
 import 'package:mobile/utils/constants.dart';
 import 'package:shared_utils/shared_utils.dart';
@@ -32,6 +33,7 @@ class _CrowderAppState extends State<CrowderApp> {
           providers: [
             BlocProvider(create: (_) => OnboardingCubit()),
             BlocProvider(create: (_) => UserCubit()),
+            BlocProvider(create: (_) => PollCubit()),
           ],
           child: MaterialApp.router(
             /// basic

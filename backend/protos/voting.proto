@@ -48,10 +48,10 @@ message PollCandidate {
 }
 
 enum PollStatus {
-  pending = 0;
-  active = 1;
-  expired = 2;
-  unknown = 3;
+  unknown = 0;
+  pending = 1;
+  active = 2;
+  expired = 3;
 }
 message GetPollsResponse { repeated Poll polls = 1; }
 

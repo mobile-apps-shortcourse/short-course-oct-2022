@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:mobile/features/election/presentation/pages/dashboard.dart';
+import 'package:mobile/features/election/presentation/pages/poll.details.dart';
 import 'package:mobile/features/onboarding/presentation/pages/setup.basic.info.dart';
 import 'package:mobile/features/onboarding/presentation/pages/user.type.picker.dart';
 import 'package:mobile/features/onboarding/presentation/pages/welcome.dart';
@@ -16,6 +17,8 @@ import 'package:mobile/features/onboarding/presentation/pages/welcome.dart';
     /// dashboard
     AutoRoute(page: DashboardPage),
 
+    // polls
+    AutoRoute(page: PollDetailsPage),
   ],
 )
 class $AppRouter {}

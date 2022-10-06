@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/election/presentation/widgets/bottom.nav.dart';
+import 'package:mobile/features/shared/presentation/manager/poll_cubit.dart';
 import 'package:mobile/features/shared/presentation/manager/user_cubit.dart';
 import 'package:mobile/protos/auth.pbgrpc.dart';
+import 'package:mobile/protos/voting.pb.dart';
 import 'package:mobile/utils/constants.dart';
 import 'package:shared_utils/shared_utils.dart';
+import 'package:tab_container/tab_container.dart';
 
 part 'ui/candidate.dashboard.dart';
 
@@ -83,10 +86,22 @@ class _DashboardPageState extends State<DashboardPage> {
         body: LoadingIndicator(
           isLoading: _loading,
           lottieAnimResource: kLoadingAnimUrl,
-          child: EmptyContentPlaceholder(
-            title: _currentUser?.displayName ?? kFeatureUnderDev,
-            subtitle: kFeatureUnderDev,
-          ),
+          child: _currentUser == null
+              ? const SizedBox.shrink()
+              : _currentUser?.type == UserType.voter
+                  ? _VoterDashboardPage(
+                      currentPageIndex: _currentTabIndex,
+                      user: _currentUser,
+                    )
+                  : _currentUser?.type == UserType.candidate
+                      ? _CandidateDashboardPage(
+                          currentPageIndex: _currentTabIndex,
+                          user: _currentUser,
+                        )
+                      : _OrganizerDashboardPage(
+                          currentPageIndex: _currentTabIndex,
+                          user: _currentUser,
+                        ),
         ),
       ),
     );

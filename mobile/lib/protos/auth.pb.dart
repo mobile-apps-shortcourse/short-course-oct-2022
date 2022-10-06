@@ -325,6 +325,7 @@ class ResetPasswordRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'ResetPasswordRequest', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'crowder'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'oldPassword', protoName: 'oldPassword')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'newPassword', protoName: 'newPassword')
+    ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'username')
     ..hasRequiredFields = false
   ;
 
@@ -332,6 +333,7 @@ class ResetPasswordRequest extends $pb.GeneratedMessage {
   factory ResetPasswordRequest({
     $core.String? oldPassword,
     $core.String? newPassword,
+    $core.String? username,
   }) {
     final _result = create();
     if (oldPassword != null) {
@@ -339,6 +341,9 @@ class ResetPasswordRequest extends $pb.GeneratedMessage {
     }
     if (newPassword != null) {
       _result.newPassword = newPassword;
+    }
+    if (username != null) {
+      _result.username = username;
     }
     return _result;
   }
@@ -380,6 +385,15 @@ class ResetPasswordRequest extends $pb.GeneratedMessage {
   $core.bool hasNewPassword() => $_has(1);
   @$pb.TagNumber(2)
   void clearNewPassword() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get username => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set username($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasUsername() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearUsername() => clearField(3);
 }
 
 class UserRequest extends $pb.GeneratedMessage {
