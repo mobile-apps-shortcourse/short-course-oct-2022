@@ -43,7 +43,12 @@ class OnboardingCubit extends Cubit<BlocState> {
 
   Future<void> login() async {
     emit(BlocState.loadingState());
-    // todo
+    var either = await _authRepo.login(
+        username: kUsername ??= '', password: kPassword ??= '');
+    either.fold(
+      (l) => emit(BlocState<CrowderUser>.successState(data: l)),
+      (r) => emit(BlocState<String>.errorState(failure: r)),
+    );
   }
 
   Future<void> logout() async {

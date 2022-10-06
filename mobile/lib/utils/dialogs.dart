@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/app/route.gr.dart';
 import 'package:mobile/features/onboarding/presentation/manager/onboarding_cubit.dart';
+import 'package:mobile/protos/auth.pbgrpc.dart';
 import 'package:mobile/utils/constants.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:shared_utils/shared_utils.dart';
@@ -57,42 +59,50 @@ Future<void> showLoginSheet(BuildContext context) async {
         color: context.colorScheme.surface,
         child: SafeArea(
           top: false,
-          child: AnimatedColumn(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              AppRoundedButton(
-                enabled: !loading,
-                layoutSize: LayoutSize.wrapContent,
-                text: loading ? 'Authenticating...' : 'Sign in',
-                onTap: () async {
-                  if (authFormKey.currentState != null &&
-                      authFormKey.currentState!.validate()) {
-                    authFormKey.currentState?.save();
+          child: BlocListener(
+            bloc: _onboardingCubit,
+            listener: (context, state) {
+              loading = state is LoadingState;
+              controller.rebuild();
 
-                    logger.i(
-                        'signing in with username(${_onboardingCubit.kUsername}) & password(${_onboardingCubit.kPassword})');
+              if (state is SuccessState<CrowderUser>) {
+                context.router.pushAndPopUntil(const DashboardRoute(),
+                    predicate: (_) => false);
+              }
 
-                    // todo => perform authentication here
-
-                    loading = true;
-                    controller.rebuild();
-                    await Future.delayed(const Duration(seconds: 2));
-                    loading = false;
-                    controller.rebuild();
-                  }
-                },
-              ),
-              Visibility(
-                visible: !loading,
-                child: AppRoundedButton(
-                  text: 'Cancel',
+              if (state is ErrorState<String>) {
+                context.showCustomDialog(
+                    headerIconAsset: kAppLogo, message: state.failure);
+              }
+            },
+            child: AnimatedColumn(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                AppRoundedButton(
+                  enabled: !loading,
                   layoutSize: LayoutSize.wrapContent,
-                  onTap: context.router.pop,
-                  outlined: true,
-                ).top(12),
-              ),
-            ],
+                  text: loading ? 'Authenticating...' : 'Sign in',
+                  onTap: () async {
+                    if (authFormKey.currentState != null &&
+                        authFormKey.currentState!.validate()) {
+                      authFormKey.currentState?.save();
+
+                      _onboardingCubit.login();
+                    }
+                  },
+                ),
+                Visibility(
+                  visible: !loading,
+                  child: AppRoundedButton(
+                    text: 'Cancel',
+                    layoutSize: LayoutSize.wrapContent,
+                    onTap: context.router.pop,
+                    outlined: true,
+                  ).top(12),
+                ),
+              ],
+            ),
           ).horizontal(40),
         ),
       ),
@@ -101,36 +111,48 @@ Future<void> showLoginSheet(BuildContext context) async {
           color: context.colorScheme.surface,
           child: SafeArea(
             top: false,
-            child: Form(
-              key: authFormKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AppTextField(
-                    'Username',
-                    enabled: !loading,
-                    controller: usernameController,
-                    inputType: TextInputType.emailAddress,
-                    onChange: (input) {
-                      _onboardingCubit.kUsername = input?.trim() ?? '';
-                      controller.rebuild();
-                    },
-                    validator: Validators.validateEmail,
-                  ),
-                  AppTextField(
-                    'Password',
-                    enabled: !loading,
-                    controller: passwordController,
-                    textFieldType: AppTextFieldType.password,
-                    onChange: (input) {
-                      _onboardingCubit.kPassword = input?.trim() ?? '';
-                      controller.rebuild();
-                    },
-                    validator: Validators.validatePassword,
-                  ),
-                ],
-              ).horizontal(40).vertical(12),
+            child: BlocBuilder(
+              bloc: _onboardingCubit,
+              builder: (context, state) {
+                if (state is LoadingState) {
+                  return const LoadingIndicatorItem(
+                    message: 'Signing in...',
+                    loadingAnimationUrl: kLoadingAnimUrl,
+                  );
+                }
+
+                return Form(
+                  key: authFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      AppTextField(
+                        'Username',
+                        enabled: !loading,
+                        controller: usernameController,
+                        inputType: TextInputType.emailAddress,
+                        onChange: (input) {
+                          _onboardingCubit.kUsername = input?.trim() ?? '';
+                          controller.rebuild();
+                        },
+                        validator: Validators.validateEmail,
+                      ),
+                      AppTextField(
+                        'Password',
+                        enabled: !loading,
+                        controller: passwordController,
+                        textFieldType: AppTextFieldType.password,
+                        onChange: (input) {
+                          _onboardingCubit.kPassword = input?.trim() ?? '';
+                          controller.rebuild();
+                        },
+                        validator: Validators.validatePassword,
+                      ),
+                    ],
+                  ).horizontal(40).vertical(12),
+                );
+              },
             ),
           ),
         );

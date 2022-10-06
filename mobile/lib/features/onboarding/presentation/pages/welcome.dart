@@ -3,6 +3,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/app/route.gr.dart';
+import 'package:mobile/features/shared/presentation/manager/user_cubit.dart';
 import 'package:mobile/utils/constants.dart';
 import 'package:mobile/utils/dialogs.dart';
 import 'package:shared_utils/shared_utils.dart';
@@ -19,6 +20,8 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+  final _userCubit = UserCubit();
+
   @override
   Widget build(BuildContext context) {
     kUseDefaultOverlays(context, statusBarBrightness: context.theme.brightness);
@@ -47,21 +50,30 @@ class _WelcomePageState extends State<WelcomePage> {
           mainAxisSize: MainAxisSize.min,
           duration: 850,
           children: [
-            AppRoundedButton(
-              text: 'Create an account',
-              layoutSize: LayoutSize.wrapContent,
-              onTap: () async {
-                await context.router.push(const UserTypePickerRoute());
-                kUseDefaultOverlays(context,
-                    statusBarBrightness: context.theme.brightness);
-              },
-            ),
-            AppRoundedButton(
-              text: 'I already have an account',
-              outlined: true,
-              layoutSize: LayoutSize.wrapContent,
-              onTap: () async => await showLoginSheet(context),
-            ).top(12),
+            if (_userCubit.isLoggedIn) ...{
+              AppRoundedButton(
+                text: 'Explore',
+                onTap: () => context.router.pushAndPopUntil(
+                    const DashboardRoute(),
+                    predicate: (_) => false),
+              ),
+            } else ...{
+              AppRoundedButton(
+                text: 'Create an account',
+                layoutSize: LayoutSize.wrapContent,
+                onTap: () async {
+                  await context.router.push(const UserTypePickerRoute());
+                  kUseDefaultOverlays(context,
+                      statusBarBrightness: context.theme.brightness);
+                },
+              ),
+              AppRoundedButton(
+                text: 'I already have an account',
+                outlined: true,
+                layoutSize: LayoutSize.wrapContent,
+                onTap: () async => await showLoginSheet(context),
+              ).top(12),
+            },
           ],
         ).horizontal(context.width * 0.1),
       ),

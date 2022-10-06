@@ -20,6 +20,8 @@ class PrefUtils {
 
 /// error/ info messages
 class MessageUtils {
+  static const kUnauthenticatedIssueMessage =
+      "You're not signed in. Please sign in and try again";
   static const kConnectionIssueMessage =
       'Oops...we have trouble reaching our servers. Please try again later';
 }

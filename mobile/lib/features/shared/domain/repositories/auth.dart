@@ -12,6 +12,10 @@ class AuthRepository {
   final _prefs = Injector.get<SharedPreferences>(),
       _authClient = Injector.get<AuthSvcClient>();
 
+// check login status
+  bool checkLoginStatus() =>
+      !_prefs.getString(PrefUtils.kUserIdKey).isNullOrEmpty();
+
   /// create new user account
   Future<Either<CrowderUser, String>> createUser({
     required String displayName,
@@ -47,5 +51,16 @@ class AuthRepository {
   /// sign out
   Future<void> logout() async {
     await _prefs.clear();
+  }
+
+  Future<Either<CrowderUser, String>> login(
+      {required String username, required String password}) async {
+    var request = LoginRequest(username: username, password: password);
+    var response = await _authClient.login(request);
+    if (response.successful) {
+      _prefs.setString(PrefUtils.kUserTypeKey, response.user.type.name);
+      _prefs.setString(PrefUtils.kUserIdKey, response.user.id);
+    }
+    return response.successful ? Left(response.user) : Right(response.message);
   }
 }
