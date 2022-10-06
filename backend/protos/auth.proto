@@ -44,6 +44,7 @@ message LoginRequest {
 message ResetPasswordRequest {
   string oldPassword = 1;
   string newPassword = 2;
+  string username = 3;
 }
 
 message UserRequest {

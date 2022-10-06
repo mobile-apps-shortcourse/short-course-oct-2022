@@ -10,6 +10,14 @@ require (
 )
 
 require (
+	github.com/creasty/defaults v1.5.1 // indirect
+	github.com/google/uuid v1.2.0 // indirect
+	github.com/gorilla/schema v1.2.0 // indirect
+)
+
+require (
+	github.com/anaskhan96/go-password-encoder v0.0.0-20201010210601-c765b799fd72
+	github.com/cloudinary/cloudinary-go v1.7.0
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/joho/godotenv v1.4.0

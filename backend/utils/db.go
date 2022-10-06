@@ -7,7 +7,6 @@ import (
 	"time"
 
 	codecs "github.com/amsokol/mongo-go-driver-protobuf"
-	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	dbOpts "go.mongodb.org/mongo-driver/mongo/options"
@@ -31,7 +30,6 @@ func GetMongoClient() *mongo.Database {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_ = godotenv.Load(".env")
 
 	return client.Database(os.Getenv("MONGODB_DB_NAME"), nil)
 }
