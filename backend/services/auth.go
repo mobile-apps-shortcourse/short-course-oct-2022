@@ -225,7 +225,8 @@ func (s *AuthSvcServer) GetUser(request *pb.UserRequest, srv pb.AuthSvc_GetUserS
 	return nil
 }
 
-// TODO
+// GetUsers
+// get users based on user type
 func (s *AuthSvcServer) GetUsers(request *pb.GetUsersRequest, srv pb.AuthSvc_GetUsersServer) error {
 	ctx, response := srv.Context(), &pb.GetUsersResponse{}
 
@@ -257,16 +258,12 @@ func (s *AuthSvcServer) GetUsers(request *pb.GetUsersRequest, srv pb.AuthSvc_Get
 					response.Users = utils.RemoveIndex(response.GetUsers(), index)
 				}
 			}
-			break
 		case "update":
 			for index, _ := range response.GetUsers() {
 				response.GetUsers()[index] = doc.FullDocument
 			}
-
-			break
 		default:
 			response.Users = append(response.Users, doc.FullDocument)
-			break
 		}
 
 		// send response to client
