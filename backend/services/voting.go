@@ -161,7 +161,7 @@ func (s *VotingSvcServer) GetCategories(request *pb.GetCategoriesRequest, srv pb
 					}
 				}
 			case "update":
-				for index, _ := range response.GetCategories() {
+				for index := range response.GetCategories() {
 					response.GetCategories()[index] = doc.FullDocument
 				}
 			default:
