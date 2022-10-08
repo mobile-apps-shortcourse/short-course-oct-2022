@@ -8,6 +8,7 @@ class CrowderAppBar extends StatefulWidget {
   final Color? contentBackground;
   final Widget child;
   final void Function()? onBackPressed;
+  final EdgeInsets contentPadding;
 
   const CrowderAppBar({
     Key? key,
@@ -16,6 +17,7 @@ class CrowderAppBar extends StatefulWidget {
     required this.child,
     this.contentBackground,
     this.onBackPressed,
+    this.contentPadding = const EdgeInsets.fromLTRB(24, 36, 24, 0),
   }) : super(key: key);
 
   @override
@@ -64,7 +66,7 @@ class _CrowderAppBarState extends State<CrowderAppBar> {
                           topRight: Radius.circular(24)),
                       color: widget.contentBackground ??
                           context.colorScheme.surface),
-                  padding: const EdgeInsets.fromLTRB(24, 36, 24, 0),
+                  padding: widget.contentPadding,
                   child: widget.child)),
 
           /// back nav

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/election/presentation/widgets/bottom.nav.dart';
+import 'package:mobile/features/election/presentation/widgets/poll.list.tile.dart';
 import 'package:mobile/features/shared/presentation/manager/poll_cubit.dart';
 import 'package:mobile/features/shared/presentation/manager/user_cubit.dart';
 import 'package:mobile/protos/auth.pbgrpc.dart';

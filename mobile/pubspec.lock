@@ -847,10 +847,10 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "792c509b801c0e88195305d1f5ab63d86db8dd36"
+      resolved-ref: "1583a59d9e76cf771ff78ab5962e6190b7c5add6"
       url: "https://github.com/quabynah-bilson/shared_utils.git"
     source: git
-    version: "0.0.22-dev.22"
+    version: "0.0.23-dev.23"
   shelf:
     dependency: transitive
     description:
@@ -865,6 +865,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  shimmer:
+    dependency: "direct main"
+    description:
+      name: shimmer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   simple_animations:
     dependency: transitive
     description:
@@ -904,7 +911,7 @@ packages:
       name: sqflite
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.0+1"
   sqflite_common:
     dependency: transitive
     description:

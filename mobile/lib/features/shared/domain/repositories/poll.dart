@@ -73,4 +73,28 @@ class PollRepository {
       return Stream.value(const Right(MessageUtils.kConnectionIssueMessage));
     }
   }
+
+  Future<Either<PollCategory, String>> getCategory({required String id}) async {
+    try {
+      var request = GetVotingItemRequest(id: id);
+      var response = await _votingClient.getCategory(request);
+      return response.successful
+          ? Left(response.category)
+          : Right(response.message);
+    } catch (e) {
+      return const Right(MessageUtils.kConnectionIssueMessage);
+    }
+  }
+
+  Future<Stream<Either<List<PollCategory>, String>>> getCategoriesForPoll(
+      {required String poll}) async {
+    try {
+      var request = GetCategoriesRequest(poll: poll);
+      return _votingClient
+          .getCategories(request)
+          .map((event) => Left(event.categories));
+    } catch (e) {
+      return Stream.value(const Right(MessageUtils.kConnectionIssueMessage));
+    }
+  }
 }

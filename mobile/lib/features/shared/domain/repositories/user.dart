@@ -25,4 +25,16 @@ class UserRepository {
       return Stream.value(const Right(MessageUtils.kConnectionIssueMessage));
     }
   }
+
+  Future<Stream<Either<CrowderUser, String>>> getUser(
+      {required String id}) async {
+    try {
+      var request = UserRequest(id: id);
+      return _authClient.getUser(request).map((event) =>
+          event.successful ? Left(event.user) : Right(event.message));
+    } catch (e) {
+      logger.e(e);
+      return Stream.value(const Right(MessageUtils.kConnectionIssueMessage));
+    }
+  }
 }

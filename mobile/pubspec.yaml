@@ -31,6 +31,7 @@ dependencies:
       url: https://github.com/quabynah-bilson/shared_utils.git
       ref: main
   tab_container: ^2.0.0
+  shimmer: ^2.0.0
 
 
 dev_dependencies:

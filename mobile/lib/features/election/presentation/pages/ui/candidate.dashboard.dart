@@ -29,19 +29,6 @@ class __CandidateDashboardPageState extends State<_CandidateDashboardPage> {
     return LoadingIndicator(
       lottieAnimResource: kLoadingAnimUrl,
       isLoading: widget.user == null || _loading,
-      // child: AnimatedColumn(
-      //   crossAxisAlignment: CrossAxisAlignment.center,
-      //   children: [
-      //     widget.user!.avatar.asNetworkImage(
-      //       height: context.height * 0.4,
-      //       width: context.width,
-      //     ),
-      //     widget.user!.displayName.h5(context).vertical(16),
-      //     widget.user!.bio
-      //         .subtitle1(context, alignment: TextAlign.center)
-      //         .horizontal(24),
-      //   ],
-      // ),
       child: BlocListener(
         bloc: _pollCubit,
         listener: (context, state) {
@@ -69,7 +56,7 @@ class __CandidateDashboardPageState extends State<_CandidateDashboardPage> {
                 clipBehavior: Clip.hardEdge,
                 margin: const EdgeInsets.fromLTRB(24, 16, 24, 20),
                 decoration: BoxDecoration(
-                  color: context.colorScheme.primary,
+                  color: context.colorScheme.secondary,
                   borderRadius: BorderRadius.circular(24),
                 ),
               ),
@@ -84,9 +71,10 @@ class __CandidateDashboardPageState extends State<_CandidateDashboardPage> {
                       ?.copyWith(color: context.colorScheme.onSurface),
                   children: [
                     _currentUserPolls(),
-                    Container(color: context.colorScheme.surface),
+                    const EmptyContentPlaceholder(
+                        title: kFeatureUnderDev, subtitle: kAppDesc),
                   ],
-                  tabs: ['My Polls', 'All Polls'],
+                  tabs: const ['My Polls', 'All Polls'],
                   isStringTabs: true,
                 ),
               ),
@@ -101,14 +89,20 @@ class __CandidateDashboardPageState extends State<_CandidateDashboardPage> {
       ? const EmptyContentPlaceholder(
           title: 'No polls found',
           subtitle: 'You\'re not part of any active polls')
-      : ListView.separated(
-          itemBuilder: (context, index) => Container(
-            color: context.colorScheme.secondary,
-            height: 40,
-            width: context.width,
-          ),
-          separatorBuilder: (_, __) => const SizedBox(height: 24),
-          itemCount: _polls.length,
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+      : Column(
+          children: [
+            // TODO add search
+            // AppTextField('Search').horizontal(24),
+            Expanded(
+              child: ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) =>
+                    PollListTile(poll: _polls[index]),
+                separatorBuilder: (_, __) => const SizedBox(height: 24),
+                itemCount: _polls.length,
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+              ),
+            ),
+          ],
         );
 }

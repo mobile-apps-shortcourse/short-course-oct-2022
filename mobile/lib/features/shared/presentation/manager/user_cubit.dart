@@ -30,4 +30,15 @@ class UserCubit extends Cubit<BlocState> {
     await _currentUserListener?.cancel();
     return super.close();
   }
+
+  Future<void> getUser(String id) async {
+    emit(BlocState.loadingState());
+    var stream = await _userRepo.getUser(id: id);
+    stream.listen((either) {
+      either.fold(
+        (l) => emit(BlocState<CrowderUser>.successState(data: l)),
+        (r) => emit(BlocState<String>.errorState(failure: r)),
+      );
+    });
+  }
 }

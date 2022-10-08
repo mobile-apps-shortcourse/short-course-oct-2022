@@ -57,4 +57,20 @@ class PollCubit extends Cubit<BlocState> {
       );
     });
   }
+
+  Future<void> getCategory({required String id}) async {
+    emit(BlocState.loadingState());
+    // TODO => get categories for poll
+  }
+
+  Future<void> getCategoriesForPoll({required String poll}) async {
+    emit(BlocState.loadingState());
+    var stream = await _pollRepo.getCategoriesForPoll(poll: poll);
+    stream.listen((either) {
+      either.fold(
+        (l) => emit(BlocState<List<PollCategory>>.successState(data: l)),
+        (r) => emit(BlocState<String>.errorState(failure: r)),
+      );
+    });
+  }
 }
