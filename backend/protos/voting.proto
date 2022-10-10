@@ -31,6 +31,7 @@ message Poll {
   repeated PollCandidate candidates = 7;
   google.protobuf.Timestamp startTimestamp = 8;
   google.protobuf.Timestamp endTimestamp = 9;
+  string bannerImage = 10;
 }
 
 // category for each poll
