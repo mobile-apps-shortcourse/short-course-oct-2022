@@ -80,6 +80,12 @@ class Poll extends $pb.GeneratedMessage {
             : 'endTimestamp',
         protoName: 'endTimestamp',
         subBuilder: $2.Timestamp.create)
+    ..aOS(
+        10,
+        const $core.bool.fromEnvironment('protobuf.omit_field_names')
+            ? ''
+            : 'bannerImage',
+        protoName: 'bannerImage')
     ..hasRequiredFields = false;
 
   Poll._() : super();
@@ -93,6 +99,7 @@ class Poll extends $pb.GeneratedMessage {
     $core.Iterable<PollCandidate>? candidates,
     $2.Timestamp? startTimestamp,
     $2.Timestamp? endTimestamp,
+    $core.String? bannerImage,
   }) {
     final _result = create();
     if (id != null) {
@@ -121,6 +128,9 @@ class Poll extends $pb.GeneratedMessage {
     }
     if (endTimestamp != null) {
       _result.endTimestamp = endTimestamp;
+    }
+    if (bannerImage != null) {
+      _result.bannerImage = bannerImage;
     }
     return _result;
   }
@@ -243,6 +253,18 @@ class Poll extends $pb.GeneratedMessage {
   void clearEndTimestamp() => clearField(9);
   @$pb.TagNumber(9)
   $2.Timestamp ensureEndTimestamp() => $_ensure(8);
+
+  @$pb.TagNumber(10)
+  $core.String get bannerImage => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set bannerImage($core.String v) {
+    $_setString(9, v);
+  }
+
+  @$pb.TagNumber(10)
+  $core.bool hasBannerImage() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearBannerImage() => clearField(10);
 }
 
 class PollCategory extends $pb.GeneratedMessage {

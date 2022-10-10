@@ -34,11 +34,12 @@ const Poll$json = const {
     const {'1': 'candidates', '3': 7, '4': 3, '5': 11, '6': '.crowder.PollCandidate', '10': 'candidates'},
     const {'1': 'startTimestamp', '3': 8, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'startTimestamp'},
     const {'1': 'endTimestamp', '3': 9, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'endTimestamp'},
+    const {'1': 'bannerImage', '3': 10, '4': 1, '5': 9, '10': 'bannerImage'},
   ],
 };
 
 /// Descriptor for `Poll`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List pollDescriptor = $convert.base64Decode('CgRQb2xsEg4KAmlkGAEgASgJUgJpZBIUCgV0aXRsZRgCIAEoCVIFdGl0bGUSHAoJb3JnYW5pemVyGAMgASgJUglvcmdhbml6ZXISHgoKY2F0ZWdvcmllcxgEIAMoCVIKY2F0ZWdvcmllcxIrCgZzdGF0dXMYBSABKA4yEy5jcm93ZGVyLlBvbGxTdGF0dXNSBnN0YXR1cxIgCgtkZXNjcmlwdGlvbhgGIAEoCVILZGVzY3JpcHRpb24SNgoKY2FuZGlkYXRlcxgHIAMoCzIWLmNyb3dkZXIuUG9sbENhbmRpZGF0ZVIKY2FuZGlkYXRlcxJCCg5zdGFydFRpbWVzdGFtcBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSDnN0YXJ0VGltZXN0YW1wEj4KDGVuZFRpbWVzdGFtcBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSDGVuZFRpbWVzdGFtcA==');
+final $typed_data.Uint8List pollDescriptor = $convert.base64Decode('CgRQb2xsEg4KAmlkGAEgASgJUgJpZBIUCgV0aXRsZRgCIAEoCVIFdGl0bGUSHAoJb3JnYW5pemVyGAMgASgJUglvcmdhbml6ZXISHgoKY2F0ZWdvcmllcxgEIAMoCVIKY2F0ZWdvcmllcxIrCgZzdGF0dXMYBSABKA4yEy5jcm93ZGVyLlBvbGxTdGF0dXNSBnN0YXR1cxIgCgtkZXNjcmlwdGlvbhgGIAEoCVILZGVzY3JpcHRpb24SNgoKY2FuZGlkYXRlcxgHIAMoCzIWLmNyb3dkZXIuUG9sbENhbmRpZGF0ZVIKY2FuZGlkYXRlcxJCCg5zdGFydFRpbWVzdGFtcBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSDnN0YXJ0VGltZXN0YW1wEj4KDGVuZFRpbWVzdGFtcBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSDGVuZFRpbWVzdGFtcBIgCgtiYW5uZXJJbWFnZRgKIAEoCVILYmFubmVySW1hZ2U=');
 @$core.Deprecated('Use pollCategoryDescriptor instead')
 const PollCategory$json = const {
   '1': 'PollCategory',
