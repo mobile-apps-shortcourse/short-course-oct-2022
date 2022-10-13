@@ -58,7 +58,13 @@ func (s *AuthSvcServer) CreateUser(ctx context.Context, request *pb.CrowderUser)
 			fmt.Println(err)
 			response.Message = err.Error()
 		} else {
-			response.Message = "Account created successfully"
+			var message string
+			if request.Status != pb.AccountStatus_blocked && request.Status != pb.AccountStatus_suspended {
+				message = "Account created successfully"
+			} else {
+				message = "Your account has been suspended or blocked. Please try again later"
+			}
+			response.Message = message
 			response.User = request
 			response.Successful = request.Status != pb.AccountStatus_blocked && request.Status != pb.AccountStatus_suspended
 		}
