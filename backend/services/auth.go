@@ -52,16 +52,15 @@ func (s *AuthSvcServer) CreateUser(ctx context.Context, request *pb.CrowderUser)
 		}
 
 		// insert into database
-		result, err := utils.AccountCol.InsertOne(context.Background(), &request)
+		_, err := utils.AccountCol.InsertOne(context.Background(), &request)
 
 		if err != nil {
 			fmt.Println(err)
 			response.Message = err.Error()
 		} else {
-			fmt.Printf("account created with database ref => %v", result.InsertedID)
 			response.Message = "Account created successfully"
 			response.User = request
-			response.Successful = true
+			response.Successful = request.Status != pb.AccountStatus_blocked && request.Status != pb.AccountStatus_suspended
 		}
 	} else {
 		fmt.Println(err)

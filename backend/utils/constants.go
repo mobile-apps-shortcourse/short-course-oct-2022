@@ -11,6 +11,5 @@ import (
 func GetMongoUri() string {
 	_ = godotenv.Load()
 	uri := fmt.Sprintf("mongodb+srv://%s:%s@cluster0.17ikbye.mongodb.net/%s?retryWrites=true&w=majority", os.Getenv("MONGODB_USERNAME"), os.Getenv("MONGODB_PASSWORD"), os.Getenv("MONGODB_DB_NAME"))
-	fmt.Printf("db uri => %v", uri)
 	return uri
 }
