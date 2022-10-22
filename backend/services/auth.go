@@ -10,6 +10,7 @@ import (
 	"crowder.com/utils"
 	cloud "github.com/cloudinary/cloudinary-go"
 	"github.com/cloudinary/cloudinary-go/api/uploader"
+	_ "github.com/joho/godotenv/autoload"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -145,7 +146,7 @@ func (s *AuthSvcServer) UpdateUser(ctx context.Context, request *pb.CrowderUser)
 func (s *AuthSvcServer) DeleteUser(ctx context.Context, request *pb.UserRequest) (*pb.AuthResponse, error) {
 	response := &pb.AuthResponse{}
 	var decodedDoc pb.CrowderUser
-	if err := utils.AccountCol.FindOneAndDelete(context.Background(), bson.D{{Key: "id", Value: request.GetId()}}).Decode(&decodedDoc); err == nil {
+	if err := utils.AccountCol.FindOneAndDelete(ctx, bson.D{{Key: "id", Value: request.GetId()}}).Decode(&decodedDoc); err == nil {
 		response.Message = "Deleted successfully"
 		response.Successful = true
 		response.User = &decodedDoc

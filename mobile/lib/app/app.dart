@@ -21,8 +21,6 @@ class CrowderApp extends StatefulWidget {
 class _CrowderAppState extends State<CrowderApp> {
   final _appRouter = AppRouter();
   final _textTheme = GoogleFonts.spaceGroteskTextTheme();
-
-  // final _textTheme = GoogleFonts.dmMonoTextTheme();
   late final _lightTheme =
           kLightTheme(context: context).copyWith(textTheme: _textTheme),
       _darkTheme = kDarkTheme(context: context).copyWith(textTheme: _textTheme);

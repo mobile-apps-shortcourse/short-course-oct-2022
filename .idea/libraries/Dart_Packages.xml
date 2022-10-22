@@ -852,7 +852,7 @@
         <entry key="shared_utils">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/git/shared_utils-792c509b801c0e88195305d1f5ab63d86db8dd36//lib" />
+              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/git/shared_utils-1583a59d9e76cf771ff78ab5962e6190b7c5add6//lib" />
             </list>
           </value>
         </entry>
@@ -867,6 +867,13 @@
           <value>
             <list>
               <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/shelf_web_socket-1.0.2/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="shimmer">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/shimmer-2.0.0/lib" />
             </list>
           </value>
         </entry>
@@ -908,7 +915,7 @@
         <entry key="sqflite">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-2.1.0/lib" />
+              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-2.1.0+1/lib" />
             </list>
           </value>
         </entry>
@@ -965,6 +972,13 @@
           <value>
             <list>
               <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/synchronized-3.0.0+3/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="tab_container">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/tab_container-2.0.0/lib" />
             </list>
           </value>
         </entry>
@@ -1069,7 +1083,7 @@
       </option>
     </properties>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/git/shared_utils-792c509b801c0e88195305d1f5ab63d86db8dd36//lib" />
+      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/git/shared_utils-1583a59d9e76cf771ff78ab5962e6190b7c5add6//lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/_fe_analyzer_shared-38.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-3.4.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/archive-3.3.1/lib" />
@@ -1190,11 +1204,12 @@
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_windows-2.1.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/shelf-1.4.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/shelf_web_socket-1.0.2/lib" />
+      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/shimmer-2.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/simple_animations-3.1.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/sliding_sheet-0.5.2/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/source_gen-1.2.2/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.9.0/lib" />
-      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-2.1.0/lib" />
+      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-2.1.0+1/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/sqflite_common-2.3.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.10.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/stream_channel-2.1.0/lib" />
@@ -1203,6 +1218,7 @@
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/supercharged-2.1.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/supercharged_dart-2.1.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/synchronized-3.0.0+3/lib" />
+      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/tab_container-2.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.2.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/test_api-0.4.12/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/timing-1.0.0/lib" />

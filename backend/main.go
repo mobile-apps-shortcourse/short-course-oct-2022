@@ -1,24 +1,22 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net"
-
 	pb "crowder.com/generated"
 	svc "crowder.com/services"
-	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"log"
+	"net"
 )
 
 func main() {
 	// loading .env file
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Printf("unable to decode .env file => %v", err)
-		return
-	}
+	//err := godotenv.Load()
+	//if err != nil {
+	//	fmt.Printf("unable to decode .env file => %v", err)
+	//	return
+	//}
 
 	// lis, err => listen for server
 	lis, err := net.Listen("tcp", ":2022")
