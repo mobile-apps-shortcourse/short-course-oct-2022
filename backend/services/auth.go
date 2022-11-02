@@ -36,11 +36,11 @@ func (s *AuthSvcServer) CreateUser(ctx context.Context, request *pb.CrowderUser)
 		salt, encoded := utils.EncodePassword(request.GetPassword())
 		request.Salt = *salt
 		request.Password = *encoded
+		cloudName, key, secret := os.Getenv("CLOUDINARY_CLOUD_NAME"), os.Getenv("CLOUDINARY_API_KEY"), os.Getenv("CLOUDINARY_SECRET")
 
 		// if avatar does not start with http/https, perform upload to cloudinary
 		if !strings.HasPrefix(request.GetAvatar(), "http") {
-			cld, _ := cloud.NewFromParams(os.Getenv("CLOUDINARY_CLOUD_NAME"),
-				os.Getenv("CLOUDINARY_API_KEY"), os.Getenv("CLOUDINARY_SECRET"))
+			cld, _ := cloud.NewFromParams(cloudName, key, secret)
 			encoded := fmt.Sprintf("data:image/png;base64,%s", request.GetAvatar())
 			resp, uploadErr := cld.Upload.Upload(ctx, encoded,
 				uploader.UploadParams{PublicID: fmt.Sprintf("%v_avatar", request.GetId()),

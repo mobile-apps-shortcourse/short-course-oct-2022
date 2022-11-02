@@ -43,6 +43,10 @@ class _CrowderAppState extends State<CrowderApp> {
               colorScheme: _lightTheme.colorScheme.copyWith(
                 background: const Color(0xffF3F5F7),
                 surface: kWhiteColor,
+                primary: const Color(0xff4d1417),
+                onPrimary: const Color(0xffedb66e),
+                secondary: const Color(0xffedb66e),
+                onSecondary:  const Color(0xff4d1417),
               ),
             ),
             darkTheme: _darkTheme.copyWith(

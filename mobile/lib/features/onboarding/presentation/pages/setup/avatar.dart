@@ -53,16 +53,12 @@ class _AvatarPageState extends State<_AvatarPage> {
           text: 'Use Gallery',
           onTap: () => _processImage(ImageSource.gallery),
           icon: FontAwesome5.images,
-          backgroundColor: context.colorScheme.secondary,
-          textColor: context.colorScheme.onSecondary,
         ).top(40),
         AppRoundedButton(
           text: 'Open Camera',
           onTap: () => _processImage(ImageSource.camera),
           outlined: true,
           icon: FeatherIcons.camera,
-          backgroundColor: context.colorScheme.secondary,
-          textColor: context.colorScheme.onSecondary,
         ).top(12),
       ],
     );

@@ -34,7 +34,7 @@ class _CrowderAppBarState extends State<CrowderAppBar> {
       height: context.height,
       width: context.width,
       decoration: BoxDecoration(
-        color: context.colorScheme.secondary,
+        color: context.colorScheme.primary,
       ),
       child: Stack(
         clipBehavior: Clip.none,
@@ -49,7 +49,7 @@ class _CrowderAppBarState extends State<CrowderAppBar> {
                   .capitalize()
                   .h6(context,
                       weight: FontWeight.w600,
-                      color: context.colorScheme.onSecondary)
+                      color: context.colorScheme.onPrimary)
                   .top(8)
                   .centered(),
             ),
@@ -80,7 +80,7 @@ class _CrowderAppBarState extends State<CrowderAppBar> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   decoration: BoxDecoration(
-                    color: context.colorScheme.onSurface,
+                    color: context.colorScheme.onPrimary,
                     borderRadius: BorderRadius.circular(24),
                   ),
                   child: IconButton(
@@ -88,7 +88,7 @@ class _CrowderAppBarState extends State<CrowderAppBar> {
                       quarterTurns: 2,
                       child: Icon(
                         Icons.arrow_right_alt,
-                        color: context.colorScheme.surface,
+                        color: context.colorScheme.primary,
                       ),
                     ),
                     onPressed: widget.onBackPressed == null
