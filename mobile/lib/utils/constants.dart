@@ -24,6 +24,7 @@ class PrefUtils {
 class MessageUtils {
   static const kUnauthenticatedIssueMessage =
       "You're not signed in. Please sign in and try again";
+  static const kImageSizeLimitMessage = 'Image is too large';
   static const kConnectionIssueMessage =
       'Oops...we have trouble reaching our servers. Please try again later';
 }

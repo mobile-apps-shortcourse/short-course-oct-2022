@@ -28,7 +28,6 @@ class _WelcomePageState extends State<WelcomePage> {
 
     return Scaffold(
       extendBody: true,
-      backgroundColor: context.colorScheme.surface,
       body: AnimatedColumn(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

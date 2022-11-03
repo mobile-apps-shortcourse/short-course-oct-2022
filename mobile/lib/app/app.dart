@@ -41,6 +41,7 @@ class _CrowderAppState extends State<CrowderApp> {
 
             /// theming
             theme: _lightTheme.copyWith(
+              scaffoldBackgroundColor: kWhiteColor,
               colorScheme: _lightTheme.colorScheme.copyWith(
                 background: const Color(0xffF3F5F7),
                 surface: const Color(0xffF5F5F5),

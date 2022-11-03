@@ -9,6 +9,7 @@ import 'package:shared_utils/shared_utils.dart';
 // details page for [Poll]s
 class PollDetailsPage extends StatefulWidget {
   final Poll poll;
+
   const PollDetailsPage({super.key, required this.poll});
 
   @override
@@ -66,8 +67,11 @@ class _PollDetailsPageState extends State<PollDetailsPage> {
                 SliverToBoxAdapter(
                   child: AnimatedColumn(
                     children: [
-                      _poll.title.h5(context, weight: FontWeight.bold),
-                      _poll.description.subtitle1(context),
+                      _poll.title.h5(context,
+                          alignment: TextAlign.center,
+                          color: context.colorScheme.primary,
+                          weight: FontWeight.bold),
+                      _poll.description.subtitle1(context).top(12),
                     ],
                   ),
                 ),
@@ -91,6 +95,8 @@ class _PollDetailsPageState extends State<PollDetailsPage> {
                     ),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+
+                    // todo => build
                   ),
                 ),
               ],
