@@ -33,6 +33,7 @@ dependencies:
   tab_container: ^2.0.0
   shimmer: ^2.0.0
   flutter_config:
+  date_time_format: ^2.0.1
 
 
 dev_dependencies:

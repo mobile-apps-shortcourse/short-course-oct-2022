@@ -60,7 +60,11 @@ class PollCubit extends Cubit<BlocState> {
 
   Future<void> getCategory({required String id}) async {
     emit(BlocState.loadingState());
-    // TODO => get categories for poll
+    var either = await _pollRepo.getCategory(id: id);
+    either.fold(
+      (l) => emit(BlocState<PollCategory>.successState(data: l)),
+      (r) => emit(BlocState<String>.errorState(failure: r)),
+    );
   }
 
   Future<void> getCategoriesForPoll({required String poll}) async {
@@ -72,5 +76,32 @@ class PollCubit extends Cubit<BlocState> {
         (r) => emit(BlocState<String>.errorState(failure: r)),
       );
     });
+  }
+
+  Future<void> createPoll(Poll poll) async {
+    emit(BlocState.loadingState());
+    var either = await _pollRepo.createPoll(poll);
+    either.fold(
+      (l) => emit(BlocState<Poll>.successState(data: l)),
+      (r) => emit(BlocState<String>.errorState(failure: r)),
+    );
+  }
+
+  Future<void> createCategory(PollCategory category) async {
+    emit(BlocState.loadingState());
+    var either = await _pollRepo.createCategory(category);
+    either.fold(
+      (l) => emit(BlocState<PollCategory>.successState(data: l)),
+      (r) => emit(BlocState<String>.errorState(failure: r)),
+    );
+  }
+
+  Future<void> deleteCategory(String id) async {
+    emit(BlocState.loadingState());
+    var either = await _pollRepo.deleteCategory(id);
+    either.fold(
+      (l) => emit(BlocState<String>.successState(data: l)),
+      (r) => emit(BlocState<String>.errorState(failure: r)),
+    );
   }
 }

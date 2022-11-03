@@ -31,13 +31,13 @@ func (s *VotingSvcServer) CreateCategory(ctx context.Context, request *pb.PollCa
 		// assign unique id
 		request.Id = primitive.NewObjectID().Hex()
 
-		// if banner does not start with http/https, perform upload to cloudinary
+		// if banner image does not start with http/https, perform upload to cloudinary
+		cloudName, key, secret := os.Getenv("CLOUDINARY_CLOUD_NAME"), os.Getenv("CLOUDINARY_API_KEY"), os.Getenv("CLOUDINARY_SECRET")
 		if !strings.HasPrefix(request.GetBannerImage(), "http") {
-			cld, _ := cloud.NewFromParams(os.Getenv("CLOUDINARY_CLOUD_NAME"),
-				os.Getenv("CLOUDINARY_API_KEY"), os.Getenv("CLOUDINARY_SECRET"))
+			cld, _ := cloud.NewFromParams(cloudName, key, secret)
 			encoded := fmt.Sprintf("data:image/png;base64,%s", request.GetBannerImage())
 			resp, uploadErr := cld.Upload.Upload(ctx, encoded,
-				uploader.UploadParams{PublicID: fmt.Sprintf("%v_banner", request.GetId()),
+				uploader.UploadParams{PublicID: fmt.Sprintf("%v_category_banner_image", request.GetId()),
 					Folder: os.Getenv("CLOUDINARY_FOLDER_NAME")})
 			if uploadErr != nil {
 				return response, uploadErr
@@ -172,7 +172,7 @@ func (s *VotingSvcServer) GetCategories(request *pb.GetCategoriesRequest, srv pb
 	return nil
 }
 
-// region polls
+// CreatePoll
 func (s *VotingSvcServer) CreatePoll(ctx context.Context, request *pb.Poll) (*pb.VotingResponse, error) {
 	response := &pb.VotingResponse{}
 	var decodedDoc pb.Poll
@@ -182,6 +182,21 @@ func (s *VotingSvcServer) CreatePoll(ctx context.Context, request *pb.Poll) (*pb
 		// user does not exist, create new account
 		// assign unique id
 		request.Id = primitive.NewObjectID().Hex()
+
+		// if banner image does not start with http/https, perform upload to cloudinary
+		cloudName, key, secret := os.Getenv("CLOUDINARY_CLOUD_NAME"), os.Getenv("CLOUDINARY_API_KEY"), os.Getenv("CLOUDINARY_SECRET")
+		if !strings.HasPrefix(request.GetBannerImage(), "http") {
+			cld, _ := cloud.NewFromParams(cloudName, key, secret)
+			encoded := fmt.Sprintf("data:image/png;base64,%s", request.GetBannerImage())
+			resp, uploadErr := cld.Upload.Upload(ctx, encoded,
+				uploader.UploadParams{PublicID: fmt.Sprintf("%v_banner_image", request.GetId()),
+					Folder: os.Getenv("CLOUDINARY_FOLDER_NAME")})
+			if uploadErr != nil {
+				return response, uploadErr
+			}
+			// update avatar url
+			request.BannerImage = resp.SecureURL
+		}
 
 		// insert into database
 		_, err := utils.PollCol.InsertOne(context.Background(), &request)
@@ -403,5 +418,3 @@ func (s *VotingSvcServer) GetPolls(request *pb.GetPollsRequest, srv pb.VotingSvc
 	}
 	return nil
 }
-
-// endregion

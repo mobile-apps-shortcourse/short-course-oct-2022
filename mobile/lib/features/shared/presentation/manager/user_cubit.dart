@@ -25,12 +25,6 @@ class UserCubit extends Cubit<BlocState> {
     });
   }
 
-  @override
-  Future<void> close() async {
-    await _currentUserListener?.cancel();
-    return super.close();
-  }
-
   Future<void> getUser(String id) async {
     emit(BlocState.loadingState());
     var stream = await _userRepo.getUser(id: id);
@@ -40,5 +34,17 @@ class UserCubit extends Cubit<BlocState> {
         (r) => emit(BlocState<String>.errorState(failure: r)),
       );
     });
+  }
+
+  Future<void> logout() async {
+    emit(BlocState.loadingState());
+    await _authRepo.logout();
+    emit(BlocState.successState(data: null));
+  }
+
+  @override
+  Future<void> close() async {
+    await _currentUserListener?.cancel();
+    return super.close();
   }
 }

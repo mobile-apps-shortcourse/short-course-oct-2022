@@ -76,7 +76,6 @@ class _PollDetailsPageState extends State<PollDetailsPage> {
                     label: 'Category',
                     values: _pollCategories.map((e) => e.name).toList(),
                     onSelected: (option) {
-                      logger.d('selected => $option');
                       setState(() => _selectedCategory = _pollCategories
                           .firstWhere((element) => element.name == option));
                     },

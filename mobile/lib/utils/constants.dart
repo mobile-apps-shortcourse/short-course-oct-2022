@@ -10,6 +10,8 @@ const kLoadingAnimUrl =
 
 /// other
 const kFeatureUnderDev = 'The requested feature is under development';
+const kImageProcessingErrorMessage =
+    'An error occurred while processing the image';
 
 /// shared prefs
 class PrefUtils {

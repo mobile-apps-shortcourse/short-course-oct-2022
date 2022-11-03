@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:mobile/features/election/presentation/pages/create.poll.dart';
 import 'package:mobile/features/election/presentation/pages/dashboard.dart';
 import 'package:mobile/features/election/presentation/pages/poll.details.dart';
 import 'package:mobile/features/onboarding/presentation/pages/setup.basic.info.dart';
@@ -17,7 +18,8 @@ import 'package:mobile/features/onboarding/presentation/pages/welcome.dart';
     /// dashboard
     AutoRoute(page: DashboardPage),
 
-    // polls
+    /// polls
+    AutoRoute(page: CreatePollPage),
     AutoRoute(page: PollDetailsPage),
   ],
 )

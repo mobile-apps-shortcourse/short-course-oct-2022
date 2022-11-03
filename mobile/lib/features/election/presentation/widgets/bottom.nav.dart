@@ -12,7 +12,7 @@ class CrowderBottomNavigationView extends StatefulWidget {
     required this.items,
     required this.onTap,
     required this.activeIndex,
-  })  : assert(items.length > 2),
+  })  : assert(items.length >= 2),
         super(key: key);
 
   @override

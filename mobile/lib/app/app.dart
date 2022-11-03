@@ -21,9 +21,10 @@ class CrowderApp extends StatefulWidget {
 class _CrowderAppState extends State<CrowderApp> {
   final _appRouter = AppRouter();
   final _textTheme = GoogleFonts.spaceGroteskTextTheme();
-  late final _lightTheme =
-          kLightTheme(context: context).copyWith(textTheme: _textTheme),
-      _darkTheme = kDarkTheme(context: context).copyWith(textTheme: _textTheme);
+  late final _lightTheme = kLightTheme(context: context)
+          .copyWith(useMaterial3: true, textTheme: _textTheme),
+      _darkTheme = kDarkTheme(context: context)
+          .copyWith(useMaterial3: true, textTheme: _textTheme);
 
   @override
   Widget build(BuildContext context) => DismissKeyboard(
@@ -42,11 +43,12 @@ class _CrowderAppState extends State<CrowderApp> {
             theme: _lightTheme.copyWith(
               colorScheme: _lightTheme.colorScheme.copyWith(
                 background: const Color(0xffF3F5F7),
-                surface: kWhiteColor,
+                surface: const Color(0xffF5F5F5),
                 primary: const Color(0xff4d1417),
                 onPrimary: const Color(0xffedb66e),
                 secondary: const Color(0xffedb66e),
-                onSecondary:  const Color(0xff4d1417),
+                onSecondary: const Color(0xff4d1417),
+                tertiary: Colors.green,
               ),
             ),
             darkTheme: _darkTheme.copyWith(

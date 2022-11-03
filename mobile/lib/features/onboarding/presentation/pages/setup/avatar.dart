@@ -103,7 +103,7 @@ class _AvatarPageState extends State<_AvatarPage> {
       logger.e(e);
       context.showCustomDialog(
           headerIconAsset: kAppLogo,
-          message: 'Oops...we are unable to use this feature');
+          message: kImageProcessingErrorMessage);
     }
   }
 }

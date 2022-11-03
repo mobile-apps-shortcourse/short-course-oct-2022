@@ -97,4 +97,40 @@ class PollRepository {
       return Stream.value(const Right(MessageUtils.kConnectionIssueMessage));
     }
   }
+
+  Future<Either<Poll, String>> createPoll(Poll poll) async {
+    try {
+      poll.organizer = _prefs.getString(PrefUtils.kUserIdKey) ?? '';
+      var response = await _votingClient.createPoll(poll);
+      return response.successful
+          ? Left(response.poll)
+          : Right(response.message);
+    } catch (e) {
+      return const Right(MessageUtils.kConnectionIssueMessage);
+    }
+  }
+
+  Future<Either<PollCategory, String>> createCategory(
+      PollCategory category) async {
+    try {
+      var response = await _votingClient.createCategory(category);
+      return response.successful
+          ? Left(response.category)
+          : Right(response.message);
+    } catch (e) {
+      return const Right(MessageUtils.kConnectionIssueMessage);
+    }
+  }
+
+  Future<Either<String, String>> deleteCategory(String id) async {
+    try {
+      var request = DeleteVotingItemRequest(id: id);
+      var response = await _votingClient.deleteCategory(request);
+      return response.successful
+          ? Left(response.message)
+          : Right(response.message);
+    } catch (e) {
+      return const Right(MessageUtils.kConnectionIssueMessage);
+    }
+  }
 }

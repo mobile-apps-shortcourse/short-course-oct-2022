@@ -1,9 +1,16 @@
+import 'dart:io';
+
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:mobile/app/route.gr.dart';
 import 'package:mobile/features/election/presentation/widgets/bottom.nav.dart';
 import 'package:mobile/features/election/presentation/widgets/poll.list.tile.dart';
 import 'package:mobile/features/shared/presentation/manager/poll_cubit.dart';
 import 'package:mobile/features/shared/presentation/manager/user_cubit.dart';
+import 'package:mobile/features/shared/presentation/widgets/app.bar.dart';
 import 'package:mobile/protos/auth.pbgrpc.dart';
 import 'package:mobile/protos/voting.pb.dart';
 import 'package:mobile/utils/constants.dart';
@@ -54,36 +61,40 @@ class _DashboardPageState extends State<DashboardPage> {
         bottomNavigationBar: CrowderBottomNavigationView(
           onTap: (index) => setState(() => _currentTabIndex = index),
           activeIndex: _currentTabIndex,
-          items: const [
-            CrowderBottomNavigationViewItem(
+          items: [
+            const CrowderBottomNavigationViewItem(
                 activeIcon: Icons.add_home,
                 inactiveIcon: Icons.add_home_outlined,
                 label: 'Home'),
-            CrowderBottomNavigationViewItem(
-                activeIcon: FeatherIcons.search,
-                inactiveIcon: FeatherIcons.search,
-                label: 'Search'),
-            CrowderBottomNavigationViewItem(
-                activeIcon: Icons.add_box,
-                inactiveIcon: Icons.add_box_outlined,
-                label: 'Contests'),
-            CrowderBottomNavigationViewItem(
-                activeIcon: Icons.favorite,
-                inactiveIcon: Icons.favorite_border_outlined,
-                label: 'Activity'),
-            CrowderBottomNavigationViewItem(
+            if (_currentUser?.type != UserType.organizer) ...{
+              const CrowderBottomNavigationViewItem(
+                  activeIcon: FeatherIcons.search,
+                  inactiveIcon: FeatherIcons.search,
+                  label: 'Search'),
+              const CrowderBottomNavigationViewItem(
+                  activeIcon: Icons.supervised_user_circle,
+                  inactiveIcon: Icons.supervised_user_circle_outlined,
+                  label: 'Contests'),
+              const CrowderBottomNavigationViewItem(
+                  activeIcon: Icons.favorite,
+                  inactiveIcon: Icons.favorite_border_outlined,
+                  label: 'Activity'),
+            },
+            const CrowderBottomNavigationViewItem(
                 activeIcon: FeatherIcons.user,
                 inactiveIcon: FeatherIcons.user,
                 label: 'Profile'),
           ],
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () => context.showCustomDialog(
-        //       headerIconAsset: kAppLogo, message: kFeatureUnderDev),
-        //   child: Icon(Icons.add_box_outlined,
-        //       size: _iconSize, /*color: context.theme.disabledColor*/),
-        // ),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: _currentUser?.type == UserType.organizer
+            ? FloatingActionButton(
+                backgroundColor: context.colorScheme.secondary,
+                foregroundColor: context.colorScheme.onSecondary,
+                child: const Icon(Entypo.plus),
+                onPressed: () => context.router.push(const CreatePollRoute()),
+              )
+            : null,
         body: LoadingIndicator(
           isLoading: _loading,
           lottieAnimResource: kLoadingAnimUrl,
