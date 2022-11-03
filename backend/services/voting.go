@@ -167,6 +167,7 @@ func (s *VotingSvcServer) GetCategories(request *pb.GetCategoriesRequest, srv pb
 			default:
 				response.Categories = append(response.GetCategories(), doc.FullDocument)
 			}
+			_ = srv.Send(response)
 		}
 	}
 	return nil

@@ -26,7 +26,7 @@ class CreatePollPage extends StatefulWidget {
 }
 
 class _CreatePollPageState extends State<CreatePollPage> {
-  var _loading = false;
+  var _loading = false, _categories = List<PollCategory>.empty();
   final _pollCubit = PollCubit(),
       _deleteCategoryCubit = PollCubit(),
       _formKey = GlobalKey<FormState>(),
@@ -69,6 +69,10 @@ class _CreatePollPageState extends State<CreatePollPage> {
               _currentPoll?.categories.add(state.data.id);
               setState(() => _bannerImage = null);
               _deleteCategoryCubit.updatePoll(poll: _currentPoll!);
+            }
+
+            if (state is SuccessState<List<PollCategory>>) {
+              setState(() => _categories = state.data);
             }
           },
           child: LoadingIndicator(
@@ -285,54 +289,67 @@ class _CreatePollPageState extends State<CreatePollPage> {
                           ),
                         ],
                       ).top(40),
-                      BlocBuilder(
-                        bloc: _pollCubit,
-                        builder: (context, state) {
-                          logger.i(state.runtimeType);
-                          if (state is SuccessState<List<PollCategory>> &&
-                              state.data.isNotEmpty) {
-                            return ListView.separated(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) => ListTile(
-                                title: Text(state.data[index].name),
-                                trailing: IconButton(
-                                  onPressed: () {
-                                    _deleteCategoryCubit
-                                        .deleteCategory(state.data[index].id);
-                                  },
-                                  color: context.colorScheme.error,
-                                  icon: BlocBuilder(
-                                    bloc: _deleteCategoryCubit,
-                                    builder: (context, state) {
-                                      if (state is LoadingState) {
-                                        return SizedBox(
-                                          height: 24,
-                                          width: 24,
-                                          child: const CircularProgressIndicator
-                                                  .adaptive()
-                                              .centered(),
-                                        );
-                                      }
 
-                                      return const Icon(FeatherIcons.trash);
-                                    },
+                      _categories.isEmpty
+                          ? const EmptyContentPlaceholder(
+                              title: 'No categories available',
+                              subtitle: 'Add new categories to get started',
+                              icon: FontAwesome5.box_open,
+                            ).top(context.height * 0.1)
+                          : Column(
+                              children: [
+                                'Categories'
+                                    .h6(context,
+                                        weight: FontWeight.bold,
+                                        color: context.colorScheme.primary)
+                                    .top(40)
+                                    .align(Alignment.centerLeft),
+                                ListView.separated(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) => ListTile(
+                                    title: Text(_categories[index].name),
+                                    subtitle:
+                                        const Text('Tap to add candidates'),
+                                    // todo => add candidates
+                                    onTap: () => context.showCustomDialog(
+                                        headerIconAsset: kAppLogo,
+                                        message: kFeatureUnderDev),
+                                    leading: _categories[index]
+                                        .bannerImage
+                                        .avatar(size: 40),
+                                    trailing: IconButton(
+                                      onPressed: () {
+                                        _deleteCategoryCubit.deleteCategory(
+                                            _categories[index].id);
+                                      },
+                                      color: context.colorScheme.error,
+                                      icon: BlocBuilder(
+                                        bloc: _deleteCategoryCubit,
+                                        builder: (context, state) {
+                                          if (state is LoadingState) {
+                                            return SizedBox(
+                                              height: 24,
+                                              width: 24,
+                                              child:
+                                                  const CircularProgressIndicator
+                                                          .adaptive()
+                                                      .centered(),
+                                            );
+                                          }
+
+                                          return const Icon(FeatherIcons.trash);
+                                        },
+                                      ),
+                                    ),
                                   ),
+                                  separatorBuilder: (_, __) =>
+                                      const SizedBox(height: 12),
+                                  itemCount: _categories.length,
                                 ),
-                              ),
-                              separatorBuilder: (_, __) =>
-                                  const SizedBox(height: 12),
-                              itemCount: state.data.length,
-                            );
-                          }
-
-                          return const EmptyContentPlaceholder(
-                            title: 'No categories available',
-                            subtitle: 'Add new categories to get started',
-                            icon: FontAwesome5.box_open,
-                          ).top(context.height * 0.1);
-                        },
-                      ),
+                              ],
+                            ),
                     ],
                   ),
           ),
