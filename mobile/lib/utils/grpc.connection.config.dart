@@ -6,8 +6,8 @@ import 'constants.dart';
 class GrpcConnectionConfig {
   late ClientChannel clientChannel;
 
-  // final _kBaseUrl = "192.168.0.170", _port = 2022;
-  final _kBaseUrl = "137.66.52.132", _port = 443;
+  final _kBaseUrl = "192.168.0.170", _port = 2022;
+  // final _kBaseUrl = "137.66.52.132", _port = 443;
 
   late final _connectionOptions = const ChannelOptions(
     credentials: ChannelCredentials.insecure(),
