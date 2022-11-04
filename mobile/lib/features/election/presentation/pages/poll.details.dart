@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:mobile/features/election/presentation/widgets/candidate.selection.grid.tile.dart';
 import 'package:mobile/features/shared/presentation/manager/poll_cubit.dart';
 import 'package:mobile/features/shared/presentation/manager/user_cubit.dart';
 import 'package:mobile/features/shared/presentation/widgets/app.bar.dart';
@@ -165,98 +166,53 @@ class _PollDetailsPageState extends State<PollDetailsPage> {
                         ],
                       ).top(40),
                     ),
+                    if (_selectedCategory != null) ...{
+                      /// candidates
+                      SliverPadding(
+                        padding: const EdgeInsets.only(top: 16),
+                        sliver: SliverGrid(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              var user = _candidates[index],
+                                  isEnrolled = _poll.candidates
+                                      .where((data) =>
+                                          data.category ==
+                                              _selectedCategory?.id &&
+                                          data.candidate == user.id)
+                                      .toList()
+                                      .isNotEmpty;
 
-                    /// candidates
-                    SliverPadding(
-                      padding: const EdgeInsets.only(top: 16),
-                      sliver: SliverGrid(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            var user = _candidates[index],
-                                isEnrolled = _poll.candidates
-                                    .where((data) =>
-                                        data.category ==
-                                            _selectedCategory?.id &&
-                                        data.candidate == user.id)
-                                    .toList()
-                                    .isNotEmpty;
-
-                            return Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                /// content
-                                Positioned.fill(
-                                  top: 48,
-                                  child: Container(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        16, 42, 16, 12),
-                                    decoration: BoxDecoration(
-                                      color: context.colorScheme.primary.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: AnimatedColumn(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        user.displayName.subtitle1(context,
-                                            color: context.colorScheme.primary,
-                                            weight: FontWeight.bold),
-                                        user.username
-                                            .subtitle2(context,
-                                                alignment: TextAlign.center)
-                                            .top(6),
-                                        AppRoundedButton(
-                                          text: isEnrolled ? 'Remove' : 'Add',
-                                          outlined: isEnrolled,
-                                          onTap: () {
-                                            if (isEnrolled) {
-                                              _poll.candidates.removeWhere(
-                                                  (data) =>
-                                                      data.candidate ==
-                                                          user.id &&
-                                                      data.category ==
-                                                          _selectedCategory
-                                                              ?.id);
-                                            } else {
-                                              _poll.candidates.add(
-                                                  PollCandidate(
-                                                      candidate: user.id,
-                                                      category:
-                                                          _selectedCategory
-                                                              ?.id));
-                                            }
-                                            _updatePollCubit.updatePoll(
-                                                poll: _poll);
-                                          },
-                                        ).top(12),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-
-                                /// user avatar
-                                Positioned(
-                                    top: -16,
-                                    left: 0,
-                                    right: 0,
-                                    child: user.avatar
-                                        .avatar(size: 96, circular: true)
-                                        .centered()),
-                              ],
-                            );
-                          },
-                          childCount: _candidates.length,
+                              return CandidateSelectionGridTile(
+                                user: user,
+                                isEnrolled: isEnrolled,
+                                onButtonPressed: () {
+                                  if (isEnrolled) {
+                                    _poll.candidates.removeWhere((data) =>
+                                        data.candidate == user.id &&
+                                        data.category == _selectedCategory?.id);
+                                  } else {
+                                    _poll.candidates.add(PollCandidate(
+                                        candidate: user.id,
+                                        category: _selectedCategory?.id));
+                                  }
+                                  _updatePollCubit.updatePoll(poll: _poll);
+                                },
+                              );
+                            },
+                            childCount: _candidates.length,
+                          ),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 16,
+                                  crossAxisSpacing: 16,
+                                  childAspectRatio: 3 / 4),
                         ),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 16,
-                                crossAxisSpacing: 16,
-                                childAspectRatio: 3 / 4),
                       ),
-                    ),
 
-                    /// spacing
-                    const SliverToBoxAdapter(child: SizedBox(height: 40)),
+                      /// spacing
+                      const SliverToBoxAdapter(child: SizedBox(height: 40)),
+                    }
                   ],
                 ),
               ),
