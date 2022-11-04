@@ -119,7 +119,11 @@ class _PollListTileState extends State<PollListTile> {
                     children: [
                       /// image
                       Positioned.fill(
-                          child: widget.poll.bannerImage.asNetworkImage()),
+                        child: Hero(
+                          tag: widget.poll.bannerImage,
+                          child: widget.poll.bannerImage.asNetworkImage(),
+                        ),
+                      ),
 
                       /// status
                       Positioned(

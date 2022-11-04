@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:mobile/protos/auth.pbgrpc.dart';
 import 'package:mobile/utils/constants.dart';
+import 'package:mobile/utils/imagery.dart';
 import 'package:mobile/utils/injector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_utils/shared_utils.dart';
@@ -30,7 +31,8 @@ class AuthRepository {
           type: type,
           username: username,
           // convert image to base 64 string
-          avatar: base64Encode(await File(avatar).readAsBytes()),
+          avatar: base64Encode(
+              await (await Imagery.compressFile(File(avatar))).readAsBytes()),
           password: password,
           displayName: displayName,
           bio: bio);

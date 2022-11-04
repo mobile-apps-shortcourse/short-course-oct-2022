@@ -71,13 +71,13 @@ class __CandidateDashboardPageState extends State<_CandidateDashboardPage> {
                     fontWeight: FontWeight.bold),
                 unselectedTextStyle: context.theme.textTheme.button
                     ?.copyWith(color: context.colorScheme.onSurface),
+                tabs: const ['My Polls', 'All Polls'],
+                isStringTabs: true,
                 children: [
                   _currentUserPolls(),
                   const EmptyContentPlaceholder(
                       title: kFeatureUnderDev, subtitle: kAppDesc),
                 ],
-                tabs: const ['My Polls', 'All Polls'],
-                isStringTabs: true,
               ).fillMaxSize(context),
             ],
           ),

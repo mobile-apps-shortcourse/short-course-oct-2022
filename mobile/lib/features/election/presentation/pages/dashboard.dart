@@ -92,7 +92,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 backgroundColor: context.colorScheme.secondary,
                 foregroundColor: context.colorScheme.onSecondary,
                 child: const Icon(Entypo.plus),
-                onPressed: () => context.router.push(CreatePollRoute()),
+                onPressed: () => context.router.push(const CreatePollRoute()),
               )
             : null,
         body: LoadingIndicator(

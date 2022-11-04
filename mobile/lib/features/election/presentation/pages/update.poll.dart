@@ -268,9 +268,13 @@ class _UpdatePollPageState extends State<UpdatePollPage> {
                                 ),
                               ),
                               child: _bannerImage == null
-                                  ? _currentPoll?.bannerImage.asNetworkImage(
-                                      height: context.height * 0.25,
-                                      width: context.width)
+                                  ? Hero(
+                                      tag: _currentPoll!.bannerImage,
+                                      child: _currentPoll!.bannerImage
+                                          .asNetworkImage(
+                                              height: context.height * 0.25,
+                                              width: context.width),
+                                    )
                                   : _bannerImage == null
                                       ? AnimatedColumn(
                                           mainAxisSize: MainAxisSize.min,

@@ -12,7 +12,7 @@ import 'package:mobile/protos/voting.pb.dart';
 import 'package:mobile/utils/constants.dart';
 import 'package:shared_utils/shared_utils.dart';
 
-// details page for [Poll]s
+/// details page for [Poll]s
 class PollDetailsPage extends StatefulWidget {
   final Poll poll;
 
@@ -134,8 +134,11 @@ class _PollDetailsPageState extends State<PollDetailsPage> {
                               child: Stack(
                                 children: [
                                   Positioned.fill(
-                                      child:
-                                          _poll.bannerImage.asNetworkImage()),
+                                    child: Hero(
+                                      tag: _poll.bannerImage,
+                                      child: _poll.bannerImage.asNetworkImage(),
+                                    ),
+                                  ),
                                   Positioned(
                                     bottom: 12,
                                     right: 8,
