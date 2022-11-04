@@ -24,4 +24,4 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflag
 CMD ["/app/main"]
 
 # Expose port to use
-EXPOSE 8243
+EXPOSE 2022
