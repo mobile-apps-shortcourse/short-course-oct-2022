@@ -34,6 +34,8 @@ dependencies:
   shimmer: ^2.0.0
   flutter_config:
   date_time_format: ^2.0.1
+  flutter_staggered_animations:
+  flutter_staggered_grid_view:
 
 
 dev_dependencies:

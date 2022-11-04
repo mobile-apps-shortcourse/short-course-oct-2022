@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:mobile/features/shared/presentation/manager/poll_cubit.dart';
+import 'package:mobile/features/shared/presentation/manager/user_cubit.dart';
 import 'package:mobile/features/shared/presentation/widgets/app.bar.dart';
+import 'package:mobile/protos/auth.pb.dart';
 import 'package:mobile/protos/voting.pb.dart';
 import 'package:mobile/utils/constants.dart';
 import 'package:shared_utils/shared_utils.dart';
@@ -17,8 +20,12 @@ class PollDetailsPage extends StatefulWidget {
 }
 
 class _PollDetailsPageState extends State<PollDetailsPage> {
-  final _pollCubit = PollCubit();
-  var _loading = false, _pollCategories = List<PollCategory>.empty();
+  final _pollCubit = PollCubit(),
+      _updatePollCubit = PollCubit(),
+      _userCubit = UserCubit();
+  var _loading = false,
+      _pollCategories = List<PollCategory>.empty(),
+      _candidates = List<CrowderUser>.empty();
   late var _poll = widget.poll;
   PollCategory? _selectedCategory;
 
@@ -31,79 +38,230 @@ class _PollDetailsPageState extends State<PollDetailsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocListener(
-      bloc: _pollCubit,
-      listener: (context, state) {
-        if (!mounted) return;
+  Widget build(BuildContext context) => MultiBlocListener(
+        listeners: [
+          BlocListener(
+            bloc: _pollCubit,
+            listener: (context, state) {
+              if (!mounted) return;
 
-        setState(() => _loading = state is LoadingState);
+              setState(() => _loading = state is LoadingState);
 
-        if (state is ErrorState<String>) {
-          context.showCustomDialog(
-              headerIconAsset: kAppLogo, message: state.failure);
-        }
+              if (state is ErrorState<String>) {
+                context.showCustomDialog(
+                    headerIconAsset: kAppLogo, message: state.failure);
+              }
 
-        if (state is SuccessState<Poll>) {
-          logger.i('poll => ${state.data}');
-          setState(() => _poll = state.data);
-        }
+              if (state is SuccessState<Poll>) {
+                logger.i('poll => ${state.data}');
+                setState(() => _poll = state.data);
+              }
 
-        if (state is SuccessState<List<PollCategory>>) {
-          logger.i(
-              'poll categories => ${state.data.map((e) => e.name).toList()}');
-          setState(() => _pollCategories = state.data);
-        }
-      },
-      child: Scaffold(
-        body: CrowderAppBar(
-          title: 'Poll Details',
-          child: LoadingIndicator(
-            lottieAnimResource: kLoadingAnimUrl,
-            isLoading: _loading,
-            child: CustomScrollView(
-              shrinkWrap: true,
-              slivers: [
-                SliverToBoxAdapter(
-                  child: AnimatedColumn(
-                    children: [
-                      _poll.title.h5(context,
-                          alignment: TextAlign.center,
-                          color: context.colorScheme.primary,
-                          weight: FontWeight.bold),
-                      _poll.description.subtitle1(context).top(12),
-                    ],
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: AppDropdownField(
-                    label: 'Category',
-                    values: _pollCategories.map((e) => e.name).toList(),
-                    onSelected: (option) {
-                      setState(() => _selectedCategory = _pollCategories
-                          .firstWhere((element) => element.name == option));
-                    },
-                    current: _selectedCategory?.name,
-                    enabled: !_loading,
-                  ).top(40),
-                ),
-                SliverToBoxAdapter(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: context.colorScheme.background,
-                      borderRadius: BorderRadius.circular(24),
+              if (state is SuccessState<List<PollCategory>>) {
+                logger.i(
+                    'poll categories => ${state.data.map((e) => e.name).toList()}');
+                setState(() => _pollCategories = state.data);
+              }
+            },
+          ),
+          BlocListener(
+            bloc: _updatePollCubit,
+            listener: (context, state) {
+              if (!mounted) return;
+
+              setState(() => _loading = state is LoadingState);
+
+              if (state is ErrorState<String>) {
+                context.showCustomDialog(
+                    headerIconAsset: kAppLogo, message: state.failure);
+              }
+
+              if (state is SuccessState<Poll>) {
+                setState(() => _poll = state.data);
+              }
+            },
+          ),
+          BlocListener(
+            bloc: _userCubit,
+            listener: (context, state) {
+              if (!mounted) return;
+
+              setState(() => _loading = state is LoadingState);
+
+              if (state is ErrorState<String>) {
+                context.showCustomDialog(
+                    headerIconAsset: kAppLogo, message: state.failure);
+              }
+
+              if (state is SuccessState<List<CrowderUser>>) {
+                logger.i(
+                    'candidates => ${state.data.map((e) => e.displayName).toList()}');
+                setState(() => _candidates = state.data);
+              }
+            },
+          ),
+        ],
+        child: Scaffold(
+          body: CrowderAppBar(
+            title: 'Poll Details',
+            child: LoadingIndicator(
+              lottieAnimResource: kLoadingAnimUrl,
+              isLoading: _loading,
+              child: AnimationLimiter(
+                child: CustomScrollView(
+                  shrinkWrap: true,
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: AnimatedColumn(
+                        children: [
+                          /// banner image
+                          Container(
+                              height: context.height * 0.3,
+                              width: context.width,
+                              margin: const EdgeInsets.only(bottom: 24),
+                              clipBehavior: Clip.antiAlias,
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(24),
+                                  topLeft: Radius.circular(24),
+                                  bottomRight: Radius.circular(12),
+                                  bottomLeft: Radius.circular(12),
+                                ),
+                              ),
+                              child: _poll.bannerImage.asNetworkImage()),
+
+                          /// title
+                          _poll.title.h5(context,
+                              alignment: TextAlign.center,
+                              color: context.colorScheme.primary,
+                              weight: FontWeight.bold),
+
+                          /// description
+                          _poll.description.subtitle1(context).top(12),
+                        ],
+                      ),
                     ),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          'Tap to select a category'
+                              .subtitle1(context,
+                                  color: context.colorScheme.primary,
+                                  weight: FontWeight.bold)
+                              .align(Alignment.centerLeft)
+                              .bottom(16),
+                          AppDropdownField(
+                            label: 'Category',
+                            values: _pollCategories.map((e) => e.name).toList(),
+                            onSelected: (option) {
+                              setState(() => _selectedCategory =
+                                  _pollCategories.firstWhere(
+                                      (element) => element.name == option));
+                              _userCubit.getUsers(UserType.candidate);
+                            },
+                            current: _selectedCategory?.name,
+                            enabled: !_loading,
+                          ),
+                        ],
+                      ).top(40),
+                    ),
 
-                    // todo => build
-                  ),
+                    /// candidates
+                    SliverPadding(
+                      padding: const EdgeInsets.only(top: 16),
+                      sliver: SliverGrid(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            var user = _candidates[index],
+                                isEnrolled = _poll.candidates
+                                    .where((data) =>
+                                        data.category ==
+                                            _selectedCategory?.id &&
+                                        data.candidate == user.id)
+                                    .toList()
+                                    .isNotEmpty;
+
+                            return Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                /// content
+                                Positioned.fill(
+                                  top: 48,
+                                  child: Container(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        16, 42, 16, 12),
+                                    decoration: BoxDecoration(
+                                      color: context.colorScheme.primary.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: AnimatedColumn(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        user.displayName.subtitle1(context,
+                                            color: context.colorScheme.primary,
+                                            weight: FontWeight.bold),
+                                        user.username
+                                            .subtitle2(context,
+                                                alignment: TextAlign.center)
+                                            .top(6),
+                                        AppRoundedButton(
+                                          text: isEnrolled ? 'Remove' : 'Add',
+                                          outlined: isEnrolled,
+                                          onTap: () {
+                                            if (isEnrolled) {
+                                              _poll.candidates.removeWhere(
+                                                  (data) =>
+                                                      data.candidate ==
+                                                          user.id &&
+                                                      data.category ==
+                                                          _selectedCategory
+                                                              ?.id);
+                                            } else {
+                                              _poll.candidates.add(
+                                                  PollCandidate(
+                                                      candidate: user.id,
+                                                      category:
+                                                          _selectedCategory
+                                                              ?.id));
+                                            }
+                                            _updatePollCubit.updatePoll(
+                                                poll: _poll);
+                                          },
+                                        ).top(12),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                /// user avatar
+                                Positioned(
+                                    top: -16,
+                                    left: 0,
+                                    right: 0,
+                                    child: user.avatar
+                                        .avatar(size: 96, circular: true)
+                                        .centered()),
+                              ],
+                            );
+                          },
+                          childCount: _candidates.length,
+                        ),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 16,
+                                crossAxisSpacing: 16,
+                                childAspectRatio: 3 / 4),
+                      ),
+                    ),
+
+                    /// spacing
+                    const SliverToBoxAdapter(child: SizedBox(height: 40)),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

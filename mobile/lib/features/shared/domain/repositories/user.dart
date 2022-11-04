@@ -37,4 +37,17 @@ class UserRepository {
       return Stream.value(const Right(MessageUtils.kConnectionIssueMessage));
     }
   }
+
+  Future<Stream<Either<List<CrowderUser>, String>>> getUsers(
+      UserType type) async {
+    try {
+      var request = GetUsersRequest(userType: type);
+      return _authClient.getUsers(request).map((event) => event.users.isNotEmpty
+          ? Left(event.users)
+          : const Right('No users found'));
+    } catch (e) {
+      logger.e(e);
+      return Stream.value(const Right(MessageUtils.kConnectionIssueMessage));
+    }
+  }
 }
