@@ -1,0 +1,40 @@
+# fly.toml file generated for bespa-go-ms on 2022-09-06T16:55:10Z
+
+app = "crowder-go-ms"
+
+[env]
+CLOUDINARY_CLOUD_NAME = "quabynah"
+CLOUDINARY_FOLDER_NAME = "crowder"
+CLOUDINARY_SECRET = "zP-6Wb8hRuuEqyim_YJO2nccpgo"
+CLOUDINARY_API_KEY = 964171239355692
+MONGODB_USERNAME = "crowder"
+MONGODB_PASSWORD = "dKMHTrv9Ms9F6dZJ"
+MONGODB_DB_NAME = "crowder"
+
+
+[experimental]
+allowed_public_ports = []
+auto_rollback = true
+
+[[services]]
+http_checks = []
+internal_port = 8243
+processes = ["app"]
+protocol = "tcp"
+script_checks = []
+[services.concurrency]
+hard_limit = 25
+soft_limit = 20
+type = "connections"
+
+[[services.ports]]
+handlers = []
+port = 443
+[services.ports.tls_options]
+alpn = ["h2"]
+
+[[services.tcp_checks]]
+grace_period = "1s"
+interval = "15s"
+restart_limit = 0
+timeout = "2s"

@@ -6,18 +6,22 @@ import 'constants.dart';
 class GrpcConnectionConfig {
   late ClientChannel clientChannel;
 
-  // final _kBaseUrl = "192.168.10.30";
-  final _kBaseUrl = "192.168.0.170";
+  final _kBaseUrl = "192.168.0.170",
+      _port = 2022,
+      _credentials = const ChannelCredentials.insecure();
+  // final _kBaseUrl = "137.66.52.132",
+  //     _port = 443,
+  //     _credentials = const ChannelCredentials.secure();
 
-  late final _connectionOptions = const ChannelOptions(
-    credentials: ChannelCredentials.insecure(),
-    idleTimeout: Duration(seconds: 9),
+  late final _connectionOptions = ChannelOptions(
+    credentials: _credentials,
+    idleTimeout: const Duration(seconds: 9),
     userAgent: kAppName,
   );
 
   GrpcConnectionConfig._internal() {
     clientChannel =
-        ClientChannel(_kBaseUrl, port: 2022, options: _connectionOptions);
+        ClientChannel(_kBaseUrl, port: _port, options: _connectionOptions);
   }
 
   static Future<GrpcConnectionConfig> get() async =>
