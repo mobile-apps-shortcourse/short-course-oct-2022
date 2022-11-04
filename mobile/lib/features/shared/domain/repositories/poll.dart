@@ -38,7 +38,7 @@ class PollRepository {
           ? Left(response.poll)
           : Right(response.message);
     } catch (e) {
-      return const Right(MessageUtils.kConnectionIssueMessage);
+      return const Right(MessageUtils.kImageSizeLimitMessage);
     }
   }
 

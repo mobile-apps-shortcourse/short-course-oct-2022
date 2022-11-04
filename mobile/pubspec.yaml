@@ -36,6 +36,8 @@ dependencies:
   date_time_format: ^2.0.1
   flutter_staggered_animations:
   flutter_staggered_grid_view:
+  flutter_image_compress:
+  path_provider: ^2.0.11
 
 
 dev_dependencies:

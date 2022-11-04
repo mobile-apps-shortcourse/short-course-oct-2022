@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:mobile/app/route.gr.dart';
 import 'package:mobile/features/election/presentation/widgets/candidate.selection.grid.tile.dart';
 import 'package:mobile/features/shared/presentation/manager/poll_cubit.dart';
 import 'package:mobile/features/shared/presentation/manager/user_cubit.dart';
@@ -129,7 +131,28 @@ class _PollDetailsPageState extends State<PollDetailsPage> {
                                   bottomLeft: Radius.circular(12),
                                 ),
                               ),
-                              child: _poll.bannerImage.asNetworkImage()),
+                              child: Stack(
+                                children: [
+                                  Positioned.fill(
+                                      child:
+                                          _poll.bannerImage.asNetworkImage()),
+                                  Positioned(
+                                    bottom: 12,
+                                    right: 8,
+                                    child: FloatingActionButton.extended(
+                                      backgroundColor:
+                                          context.colorScheme.secondary,
+                                      foregroundColor:
+                                          context.colorScheme.onSecondary,
+                                      onPressed: () => context.router
+                                          .push(UpdatePollRoute(poll: _poll)),
+                                      icon: const Icon(
+                                          FeatherIconsSnakeCase.edit_2),
+                                      label: 'Edit Poll'.button(context),
+                                    ),
+                                  )
+                                ],
+                              )),
 
                           /// title
                           _poll.title.h5(context,

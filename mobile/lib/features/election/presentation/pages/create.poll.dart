@@ -13,6 +13,7 @@ import 'package:mobile/features/shared/presentation/manager/poll_cubit.dart';
 import 'package:mobile/features/shared/presentation/widgets/app.bar.dart';
 import 'package:mobile/protos/voting.pb.dart';
 import 'package:mobile/utils/constants.dart';
+import 'package:mobile/utils/imagery.dart';
 import 'package:mobile/utils/validator.dart';
 import 'package:protobuf_google/protobuf_google.dart';
 import 'package:shared_utils/shared_utils.dart';
@@ -422,7 +423,8 @@ class _CreatePollPageState extends State<CreatePollPage> {
       var poll = Poll(
         title: title,
         description: desc,
-        bannerImage: base64Encode(await _bannerImage!.readAsBytes()),
+        bannerImage: base64Encode(
+            await (await Imagery.compressFile(_bannerImage!)).readAsBytes()),
         startTimestamp: Timestamp.fromDateTime(_startTimestamp!),
         endTimestamp: Timestamp.fromDateTime(_endTimestamp!),
         status: PollStatus.pending,
@@ -444,7 +446,8 @@ class _CreatePollPageState extends State<CreatePollPage> {
 
       var category = PollCategory(
         poll: _currentPoll!.id,
-        bannerImage: base64Encode(await _bannerImage!.readAsBytes()),
+        bannerImage: base64Encode(
+            await (await Imagery.compressFile(_bannerImage!)).readAsBytes()),
         name: _nameController.text.trim(),
       );
       _pollCubit.createCategory(category);

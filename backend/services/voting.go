@@ -77,12 +77,12 @@ func (s *VotingSvcServer) UpdateCategory(ctx context.Context, request *pb.PollCa
 		decodedDoc.Poll = request.GetPoll()
 
 		// if avatar does not start with http/https, perform upload to cloudinary
+		cloudName, key, secret := os.Getenv("CLOUDINARY_CLOUD_NAME"), os.Getenv("CLOUDINARY_API_KEY"), os.Getenv("CLOUDINARY_SECRET")
 		if !strings.HasPrefix(request.GetBannerImage(), "http") {
-			cld, _ := cloud.NewFromParams(os.Getenv("CLOUDINARY_CLOUD_NAME"),
-				os.Getenv("CLOUDINARY_API_KEY"), os.Getenv("CLOUDINARY_SECRET"))
+			cld, _ := cloud.NewFromParams(cloudName, key, secret)
 			encoded := fmt.Sprintf("data:image/png;base64,%s", request.GetBannerImage())
 			resp, uploadErr := cld.Upload.Upload(ctx, encoded,
-				uploader.UploadParams{PublicID: fmt.Sprintf("%v_avatar", request.GetId()),
+				uploader.UploadParams{PublicID: fmt.Sprintf("%v_category_banner_image", request.GetId()),
 					Folder: os.Getenv("CLOUDINARY_FOLDER_NAME")})
 			if uploadErr != nil {
 				response.Category = &decodedDoc
@@ -235,6 +235,19 @@ func (s *VotingSvcServer) UpdatePoll(ctx context.Context, request *pb.Poll) (*pb
 		decodedDoc.Status = request.GetStatus()
 		decodedDoc.Candidates = request.GetCandidates()
 
+		cloudName, key, secret := os.Getenv("CLOUDINARY_CLOUD_NAME"), os.Getenv("CLOUDINARY_API_KEY"), os.Getenv("CLOUDINARY_SECRET")
+		if !strings.HasPrefix(request.GetBannerImage(), "http") {
+			cld, _ := cloud.NewFromParams(cloudName, key, secret)
+			encoded := fmt.Sprintf("data:image/png;base64,%s", request.GetBannerImage())
+			resp, uploadErr := cld.Upload.Upload(ctx, encoded, uploader.UploadParams{PublicID: fmt.Sprintf("%v_banner_image", request.GetId()),
+				Folder: os.Getenv("CLOUDINARY_FOLDER_NAME")})
+			if uploadErr != nil {
+				return response, uploadErr
+			}
+			// update avatar url
+			decodedDoc.BannerImage = resp.SecureURL
+		}
+
 		// insert into database
 		model := mongo.NewUpdateOneModel().SetFilter(bson.D{{Key: "id", Value: request.GetId()}}).SetUpdate(bson.M{"$set": &decodedDoc}).SetUpsert(true)
 		_ = utils.PollCol.FindOneAndUpdate(context.Background(), model.Filter, model.Update)
@@ -251,7 +264,7 @@ func (s *VotingSvcServer) UpdatePoll(ctx context.Context, request *pb.Poll) (*pb
 func (s *VotingSvcServer) DeletePoll(ctx context.Context, request *pb.DeleteVotingItemRequest) (*pb.VotingResponse, error) {
 	response := &pb.VotingResponse{}
 	var decodedDoc pb.Poll
-	if err := utils.PollCol.FindOneAndDelete(context.Background(), bson.D{{Key: "id", Value: request.GetId()}}).Decode(&decodedDoc); err == nil {
+	if err := utils.PollCol.FindOneAndDelete(ctx, bson.D{{Key: "id", Value: request.GetId()}}).Decode(&decodedDoc); err == nil {
 		response.Message = "Deleted successfully"
 		response.Successful = true
 		response.Poll = &decodedDoc

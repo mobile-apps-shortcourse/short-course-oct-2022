@@ -94,7 +94,7 @@ class __OrganizerDashboardPageState extends State<_OrganizerDashboardPage> {
                       subtitle: 'Add a new poll to get started'),
                   AppRoundedButton(
                     text: 'Create one',
-                    onTap: () => context.router.push(const CreatePollRoute()),
+                    onTap: () => context.router.push(CreatePollRoute()),
                   ).top(24),
                 ],
               ).top(24),
